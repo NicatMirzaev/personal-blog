@@ -1,0 +1,17 @@
+{
+  "navbar": {
+    "signIn": "Sign in",
+    "contact": "Contact",
+    "about": "About"
+  },
+  "feed": {
+    "popularPosts": "Popular posts",
+    "latestPosts": "Latest posts",
+    "discover": "Discover All The Posts"
+  },
+  "signIn": {
+    "withGoogle": "Sign in with Google",
+    "withTwitter": "Sign in with Twitter",
+    "withGithub": "Sign in with GitHub"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "navbar": {
+    "signIn": "Giriş yap",
+    "contact": "İletişim",
+    "about": "Hakkımda"
+  },
+  "feed": {
+    "popularPosts": "Popüler gönderiler",
+    "latestPosts": "Son gönderiler",
+    "discover": "Tüm Gönderileri Keşfet"
+  },
+  "signIn": {
+    "withGoogle": "Google ile giriş yap",
+    "withTwitter": "Twitter ile giriş yap",
+    "withGithub": "GitHub ile giriş yap"
+  }
+}
