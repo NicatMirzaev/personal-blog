@@ -18,7 +18,8 @@
       "react/jsx-props-no-spreading": 0,
       "jsx-a11y/anchor-is-valid": 0,
       "operator-linebreak": "off",
-      "no-underscore-dangle":"off"
+      "no-underscore-dangle":"off",
+      "object-curly-newline":"off"
     },
     "env": {
       "browser": true,

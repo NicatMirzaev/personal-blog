@@ -19,5 +19,12 @@
     "settings": "Settings",
     "logout": "Log out",
     "createPost": "Create Post"
+  },
+  "settings": {
+    "settings": "Settings",
+    "bio": "Bio",
+    "displayName": "Display Name",
+    "profileImg": "Profile Image URL",
+    "save": "Save Changes"
   }
 }

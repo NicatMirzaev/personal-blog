@@ -7,6 +7,7 @@ import Search from '../icons/Search';
 import MoreIcon from '../icons/More';
 import LanguageSelector from './LanguageSelector';
 import LoginModal from './LoginModal';
+import SettingsModal from './SettingsModal';
 import UserAvatar from './UserAvatar';
 import { useAuthContext } from '../AuthProvider';
 
@@ -16,6 +17,7 @@ const Navbar = () => {
   const [menu, setMenu] = React.useState(false);
   const [openModal, setOpenModal] = React.useState(false);
   const [profileMenu, setProfileMenu] = React.useState(false);
+  const [showSettings, setShowSettings] = React.useState(false);
   const menuRef = React.createRef();
   const profileMenuRef = React.createRef();
 
@@ -51,6 +53,9 @@ const Navbar = () => {
   return (
     <nav className="flex fixed top-0 items-center h-14 bg-white w-full">
       {openModal === true && <LoginModal onClose={() => setOpenModal(false)} />}
+      {showSettings === true && (
+        <SettingsModal onClose={() => setShowSettings(false)} />
+      )}
       <div className="flex w-full h-full items-center justify-between md:px-20 px-6">
         <Link href="/">
           <a className="w-10 h-10">
@@ -168,6 +173,11 @@ const Navbar = () => {
                     </a>
                   </Link>
                   <Button
+                    onClick={() => {
+                      setShowSettings(true);
+                      setProfileMenu(false);
+                      setOpenModal(false);
+                    }}
                     color="transparent"
                     className="w-full px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
                   >

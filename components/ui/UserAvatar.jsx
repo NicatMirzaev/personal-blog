@@ -1,4 +1,3 @@
-/* eslint-disable object-curly-newline */
 /* eslint-disable indent */
 import { useState } from 'react';
 import PropTypes from 'prop-types';
