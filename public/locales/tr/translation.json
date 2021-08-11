@@ -25,6 +25,13 @@
     "bio": "Bio",
     "displayName": "İsim",
     "profileImg": "Profil Resmi URL",
-    "save": "Değişiklikleri Kaydet"
+    "save": "Değişiklikleri Kaydet",
+    "saveSuccess": "Değişiklikler başarıyla kaydedildi!"
+  },
+  "errorCodes": {
+    "invalid-token": "Kullanıcı bulunamadı veya geçersiz token.",
+    "invalid-syntax": "Geçersiz syntax yapısı.",
+    "bio-length": "Biografiniz 300 karakteri geçemez.",
+    "name-length": "İsim 3 ile 50 karakter arasında olmalıdır."
   }
 }

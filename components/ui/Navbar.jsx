@@ -9,11 +9,13 @@ import LanguageSelector from './LanguageSelector';
 import LoginModal from './LoginModal';
 import SettingsModal from './SettingsModal';
 import UserAvatar from './UserAvatar';
-import { useAuthContext } from '../AuthProvider';
+import { removeValue } from '../../lib/store';
+import { useAuth, useAuthContext } from '../AuthProvider';
 
 const Navbar = () => {
   const { t } = useTranslation();
   const user = useAuthContext();
+  const dispatch = useAuth();
   const [menu, setMenu] = React.useState(false);
   const [openModal, setOpenModal] = React.useState(false);
   const [profileMenu, setProfileMenu] = React.useState(false);
@@ -49,6 +51,14 @@ const Navbar = () => {
       window.removeEventListener('mousedown', handleClick);
     };
   }, [menu, menuRef, profileMenu, profileMenuRef]);
+
+  const handleLogout = () => {
+    setProfileMenu(false);
+    setShowSettings(false);
+    setOpenModal(false);
+    removeValue('token');
+    dispatch({ type: 'SET_USER', payload: null });
+  };
 
   return (
     <nav className="flex fixed top-0 items-center h-14 bg-white w-full">
@@ -192,6 +202,7 @@ const Navbar = () => {
                     </a>
                   </Link>
                   <Button
+                    onClick={handleLogout}
                     color="transparent"
                     className="w-full px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
                   >

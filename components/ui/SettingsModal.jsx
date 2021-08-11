@@ -2,7 +2,10 @@ import React from 'react';
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { useAuthContext } from '../AuthProvider';
+import { useAuthContext, useAuth } from '../AuthProvider';
+import { getValue } from '../../lib/store';
+import { API_URL } from '../../lib/config';
+import { makeRequest } from '../../lib/helpers';
 import Input from './Input';
 import Button from './Button';
 
@@ -21,13 +24,13 @@ const customStyles = {
 const SettingsModal = ({ onClose }) => {
   const { t } = useTranslation();
   const user = useAuthContext();
+  const dispatch = useAuth();
+  const [data, setData] = React.useState({ error: '', loading: false });
   const [values, setValues] = React.useState({
     bio: user.bio,
     displayName: user.displayName,
     profileImg: user.profileImg,
   });
-
-  const [canSubmit, setCanSubmit] = React.useState(false);
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -37,11 +40,45 @@ const SettingsModal = ({ onClose }) => {
     if (
       values.bio === user.bio &&
       values.displayName === user.displayName &&
-      values.profileImg === user.profileImg
+      values.profileImg === user.profileImg &&
+      data.loading === false
     ) {
       return true;
     }
     return false;
+  };
+
+  const handleSubmit = () => {
+    setData({ error: '', loading: true });
+    const token = getValue('token');
+    if (token) {
+      const authURL = `${API_URL}/users/update`;
+      const data = {
+        bio: values.bio,
+        displayName: values.displayName,
+        profileImg: values.profileImg,
+      };
+      makeRequest(authURL, 'POST', JSON.stringify(data)).then((res) => {
+        if (res.errorCode === undefined) {
+          dispatch({ type: 'SET_USER', payload: res });
+          setData({ error: '', loading: false, success: true });
+        } else {
+          setData({ error: t(`errorCodes.${res.errorCode}`), loading: false });
+        }
+      });
+    }
+  };
+
+  const showMessage = () => {
+    if (data.error.length > 0) {
+      return <p className="text-xs text-red-500 my-2">{data.error}</p>;
+    } else if (data.success === true) {
+      return (
+        <p className="text-xs text-green-500 my-2">
+          {t('settings.saveSuccess')}
+        </p>
+      );
+    }
   };
 
   return (
@@ -64,6 +101,7 @@ const SettingsModal = ({ onClose }) => {
               name="displayName"
               type="text"
               className="my-2"
+              maxLength="50"
               value={values.displayName}
               onChange={handleChange}
               placeholder={t('settings.displayName')}
@@ -89,12 +127,19 @@ const SettingsModal = ({ onClose }) => {
               type="text"
               textarea
               className="mt-2"
+              maxLength="300"
               value={values.bio}
               onChange={handleChange}
               placeholder={t('settings.bio')}
             />
+            {showMessage()}
             <div className="flex w-full justify-center items-center">
-              <Button disabled={checkSubmit()} extraClassName="mt-3 w-1/2">
+              <Button
+                onClick={handleSubmit}
+                disabled={checkSubmit()}
+                loading={data.loading}
+                extraClassName="mt-3 w-1/2"
+              >
                 {t('settings.save')}
               </Button>
             </div>

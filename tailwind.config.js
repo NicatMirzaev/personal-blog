@@ -65,6 +65,7 @@ module.exports = {
   variants: {
     backgroundColor: ({ after }) => after(['disabled']),
     textColor: ({ after }) => after(['disabled']),
+    cursor: ({ after }) => after(['disabled']),
   },
   plugins: [],
 };

@@ -25,6 +25,13 @@
     "bio": "Bio",
     "displayName": "Display Name",
     "profileImg": "Profile Image URL",
-    "save": "Save Changes"
+    "save": "Save Changes",
+    "saveSuccess": "Changes saved successfully!"
+  },
+  "errorCodes": {
+    "invalid-token": "User not found or invalid token.",
+    "invalid-syntax": "Invalid syntax.",
+    "bio-length": "Biography can be up to 300 characters.",
+    "name-length": "The name must be between 3 and 300 characters"
   }
 }
