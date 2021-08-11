@@ -13,5 +13,11 @@
     "withGoogle": "Google ile giriş yap",
     "withTwitter": "Twitter ile giriş yap",
     "withGithub": "GitHub ile giriş yap"
+  },
+  "profile": {
+    "myProfile": "Profil",
+    "settings": "Ayarlar",
+    "logout": "Çıkış yap",
+    "createPost": "Gönderi Oluştur"
   }
 }

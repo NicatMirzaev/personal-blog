@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Post from './Post';
 
 const Posts = ({ posts }) => (
-  <div className="flex flex-wrap w-full xl:justify-center justify-start">
+  <div className="flex flex-wrap w-full justify-center">
     {posts.map((post) => (
       <Post key={post.id} data={post} />
     ))}

@@ -7,12 +7,17 @@ import Search from '../icons/Search';
 import MoreIcon from '../icons/More';
 import LanguageSelector from './LanguageSelector';
 import LoginModal from './LoginModal';
+import UserAvatar from './UserAvatar';
+import { useAuthContext } from '../AuthProvider';
 
 const Navbar = () => {
   const { t } = useTranslation();
+  const user = useAuthContext();
   const [menu, setMenu] = React.useState(false);
   const [openModal, setOpenModal] = React.useState(false);
+  const [profileMenu, setProfileMenu] = React.useState(false);
   const menuRef = React.createRef();
+  const profileMenuRef = React.createRef();
 
   React.useEffect(() => {
     function handleClick(e) {
@@ -24,6 +29,16 @@ const Navbar = () => {
       ) {
         setMenu(false);
       }
+
+      if (
+        profileMenu === true &&
+        profileMenuRef &&
+        !profileMenuRef.current.contains(e.target) &&
+        e.target.classList.value !==
+          'bg-primary-900 hover:opacity-20 transition duration-200 opacity-0 absolute w-full h-full top-0 left-0 rounded-full'
+      ) {
+        setProfileMenu(false);
+      }
     }
 
     window.addEventListener('mousedown', handleClick);
@@ -31,7 +46,7 @@ const Navbar = () => {
     return () => {
       window.removeEventListener('mousedown', handleClick);
     };
-  }, [menu, menuRef]);
+  }, [menu, menuRef, profileMenu, profileMenuRef]);
 
   return (
     <nav className="flex fixed top-0 items-center h-14 bg-white w-full">
@@ -47,7 +62,10 @@ const Navbar = () => {
             <Search />
           </Button>
           <MoreIcon
-            onClick={() => setMenu(!menu)}
+            onClick={() => {
+              setMenu(!menu);
+              setProfileMenu(false);
+            }}
             className="sm:hidden block cursor-pointer"
           />
           {menu === true && (
@@ -78,15 +96,16 @@ const Navbar = () => {
                       {t('navbar.contact')}
                     </a>
                   </Link>
-                  <p
+                  <Button
                     onClick={() => {
                       setOpenModal(true);
                       setMenu(false);
                     }}
-                    className="cursor-pointer px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                    color="transparent"
+                    className="w-full px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
                   >
                     {t('navbar.signIn')}
-                  </p>
+                  </Button>
 
                   <LanguageSelector extraClassName="flex justify-center" />
                 </div>
@@ -110,12 +129,68 @@ const Navbar = () => {
             {t('navbar.contact')}
           </Button>
           <LanguageSelector extraClassName="sm:flex hidden" />
-          <Button
-            onClick={() => setOpenModal(true)}
-            extraClassName="sm:flex hidden ml-5"
-          >
-            {t('navbar.signIn')}
-          </Button>
+          {!user ? (
+            <Button
+              onClick={() => setOpenModal(true)}
+              extraClassName="sm:flex hidden ml-5"
+            >
+              {t('navbar.signIn')}
+            </Button>
+          ) : (
+            <UserAvatar
+              onClick={() => {
+                setProfileMenu(!profileMenu);
+                setMenu(false);
+              }}
+              extraClassName="ml-5"
+              src={user.profileImg}
+              username={user.displayName}
+            />
+          )}
+          {profileMenu === true && (
+            <div
+              ref={profileMenuRef}
+              className="origin-top-right absolute top-14 right-4 mt-2 w-56 rounded-md shadow-lg"
+            >
+              <div className="rounded-md bg-white shadow-xs">
+                <div
+                  className="pt-1"
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="options-menu"
+                >
+                  <Link href={`/user/${user._id}`}>
+                    <a
+                      className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                      role="menuitem"
+                    >
+                      {t('profile.myProfile')}
+                    </a>
+                  </Link>
+                  <Button
+                    color="transparent"
+                    className="w-full px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                  >
+                    {t('profile.settings')}
+                  </Button>
+                  <Link href="/create-post">
+                    <a
+                      className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                      role="menuitem"
+                    >
+                      {t('profile.createPost')}
+                    </a>
+                  </Link>
+                  <Button
+                    color="transparent"
+                    className="w-full px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                  >
+                    {t('profile.logout')}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </nav>

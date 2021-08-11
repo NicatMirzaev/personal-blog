@@ -13,5 +13,11 @@
     "withGoogle": "Sign in with Google",
     "withTwitter": "Sign in with Twitter",
     "withGithub": "Sign in with GitHub"
+  },
+  "profile": {
+    "myProfile": "Profile",
+    "settings": "Settings",
+    "logout": "Log out",
+    "createPost": "Create Post"
   }
 }
