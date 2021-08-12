@@ -27,9 +27,9 @@ const SettingsModal = ({ onClose }) => {
   const dispatch = useAuth();
   const [data, setData] = React.useState({ error: '', loading: false });
   const [values, setValues] = React.useState({
-    bio: user.bio,
-    displayName: user.displayName,
-    profileImg: user.profileImg,
+    bio: user.data.bio,
+    displayName: user.data.displayName,
+    profileImg: user.data.profileImg,
   });
 
   const handleChange = (e) => {
@@ -38,9 +38,9 @@ const SettingsModal = ({ onClose }) => {
 
   const checkSubmit = () => {
     if (
-      values.bio === user.bio &&
-      values.displayName === user.displayName &&
-      values.profileImg === user.profileImg &&
+      values.bio === user.data.bio &&
+      values.displayName === user.data.displayName &&
+      values.profileImg === user.data.profileImg &&
       data.loading === false
     ) {
       return true;
@@ -60,7 +60,10 @@ const SettingsModal = ({ onClose }) => {
       };
       makeRequest(authURL, 'POST', JSON.stringify(data)).then((res) => {
         if (res.errorCode === undefined) {
-          dispatch({ type: 'SET_USER', payload: res });
+          dispatch({
+            type: 'SET_USER',
+            payload: { loading: false, data: res },
+          });
           setData({ error: '', loading: false, success: true });
         } else {
           setData({ error: t(`errorCodes.${res.errorCode}`), loading: false });

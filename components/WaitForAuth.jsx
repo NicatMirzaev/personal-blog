@@ -16,16 +16,23 @@ const WaitForAuth = ({ children }) => {
     setLoading(true);
     const token = getValue('token');
     if (!token) {
-      dispatch({ type: 'SET_USER', payload: null });
+      dispatch({ type: 'SET_USER', payload: { loading: false, data: null } });
       setLoading(false);
     } else {
       const authURL = `${API_URL}/users/me`;
+      dispatch({ type: 'SET_USER', payload: { loading: true, data: null } });
       makeRequest(authURL, 'GET').then((data) => {
         if (data.error === undefined) {
-          dispatch({ type: 'SET_USER', payload: data });
+          dispatch({
+            type: 'SET_USER',
+            payload: { loading: false, data: data },
+          });
           setLoading(false);
         } else {
-          dispatch({ type: 'SET_USER', payload: null });
+          dispatch({
+            type: 'SET_USER',
+            payload: { loading: false, data: null },
+          });
           setLoading(false);
         }
       });

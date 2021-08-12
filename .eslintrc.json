@@ -19,7 +19,8 @@
       "jsx-a11y/anchor-is-valid": 0,
       "operator-linebreak": "off",
       "no-underscore-dangle":"off",
-      "object-curly-newline":"off"
+      "object-curly-newline":"off",
+      "react/jsx-one-expression-per-line":"off"
     },
     "env": {
       "browser": true,

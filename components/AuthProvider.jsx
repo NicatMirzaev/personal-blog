@@ -13,7 +13,7 @@ const reducer = (state, action) => {
 };
 // eslint-disable-next-line
 export const AuthProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, null);
+  const [state, dispatch] = useReducer(reducer, { loading: true, data: null });
   return (
     <AuthDispatchContext.Provider value={dispatch}>
       <AuthContext.Provider value={state}>{children}</AuthContext.Provider>

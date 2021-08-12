@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import Navbar from '../ui/Navbar';
+import Layout from '../Layout';
+import Footer from '../ui/Footer';
 import Posts from '../ui/Posts';
 import Button from '../ui/Button';
-import Footer from '../ui/Footer';
 
 const posts = [
   {
@@ -54,27 +54,24 @@ const Home = () => {
   const { t } = useTranslation();
 
   return (
-    <div style={{ paddingTop: '60px' }} className="w-full h-full">
-      <Navbar />
-      <div className="flex w-full h-full">
-        <div className="flex flex-col w-full h-full xs:pl-0 pl-4 pt-7 items-center">
-          <p className="mb-5 text-sm font-medium ">{t('feed.popularPosts')}</p>
-          <Posts posts={posts} />
-          <p className="mb-5 text-sm font-medium ">{t('feed.latestPosts')}</p>
-          <Posts posts={posts} />
-          <div className="my-10 flex items-center justify-center w-full">
-            <Button
-              link="/discover"
-              extraClassName="xs:w-1/2 w-full "
-              color="primary"
-            >
-              {t('feed.discover')}
-            </Button>
-          </div>
-          <Footer />
+    <Layout title="Home">
+      <div className="flex flex-col w-full h-full xs:pl-0 pl-4 pt-7 items-center">
+        <p className="mb-5 text-sm font-medium ">{t('feed.popularPosts')}</p>
+        <Posts posts={posts} />
+        <p className="mb-5 text-sm font-medium ">{t('feed.latestPosts')}</p>
+        <Posts posts={posts} />
+        <div className="my-10 flex items-center justify-center w-full">
+          <Button
+            link="/discover"
+            extraClassName="xs:w-1/2 w-full "
+            color="primary"
+          >
+            {t('feed.discover')}
+          </Button>
         </div>
+        <Footer />
       </div>
-    </div>
+    </Layout>
   );
 };
 

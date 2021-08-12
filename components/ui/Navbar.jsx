@@ -57,7 +57,7 @@ const Navbar = () => {
     setShowSettings(false);
     setOpenModal(false);
     removeValue('token');
-    dispatch({ type: 'SET_USER', payload: null });
+    dispatch({ type: 'SET_USER', payload: { loading: false, data: null } });
   };
 
   return (
@@ -144,7 +144,7 @@ const Navbar = () => {
             {t('navbar.contact')}
           </Button>
           <LanguageSelector extraClassName="sm:flex hidden" />
-          {!user ? (
+          {!user.data ? (
             <Button
               onClick={() => setOpenModal(true)}
               extraClassName="sm:flex hidden ml-5"
@@ -158,8 +158,8 @@ const Navbar = () => {
                 setMenu(false);
               }}
               extraClassName="ml-5"
-              src={user.profileImg}
-              username={user.displayName}
+              src={user.data.profileImg}
+              username={user.data.displayName}
             />
           )}
           {profileMenu === true && (
@@ -174,7 +174,7 @@ const Navbar = () => {
                   aria-orientation="vertical"
                   aria-labelledby="options-menu"
                 >
-                  <Link href={`/user/${user._id}`}>
+                  <Link href={`/user/${user.data._id}`}>
                     <a
                       className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
                       role="menuitem"
@@ -193,14 +193,16 @@ const Navbar = () => {
                   >
                     {t('profile.settings')}
                   </Button>
-                  <Link href="/create-post">
-                    <a
-                      className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
-                      role="menuitem"
-                    >
-                      {t('profile.createPost')}
-                    </a>
-                  </Link>
+                  {user.data.moderator === true && (
+                    <Link href="/create-post">
+                      <a
+                        className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                        role="menuitem"
+                      >
+                        {t('profile.createPost')}
+                      </a>
+                    </Link>
+                  )}
                   <Button
                     onClick={handleLogout}
                     color="transparent"
