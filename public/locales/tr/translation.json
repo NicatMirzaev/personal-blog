@@ -28,10 +28,30 @@
     "save": "Değişiklikleri Kaydet",
     "saveSuccess": "Değişiklikler başarıyla kaydedildi!"
   },
+  "createPost": {
+    "header": "Yeni gönderi oluştur",
+    "title": "Başlık",
+    "slug": "Slug",
+    "img": "Resim URL",
+    "category": "Kategori",
+    "summary": "Özet",
+    "share": "Paylaş"
+  },
+  "categories": {
+    "Science": "Bilim",
+    "Game": "Oyun",
+    "Technologie": "Teknoloji",
+    "Mobile": "Mobil",
+    "Software": "Yazılım"
+  },
   "errorCodes": {
     "invalid-token": "Kullanıcı bulunamadı veya geçersiz token.",
     "invalid-syntax": "Geçersiz syntax yapısı.",
     "bio-length": "Biografiniz 300 karakteri geçemez.",
-    "name-length": "İsim 3 ile 50 karakter arasında olmalıdır."
+    "name-length": "İsim 3 ile 50 karakter arasında olmalıdır.",
+    "permission": "Erişim için yetkiniz yok.",
+    "title-length": "Başlık 5 ile 100 karakter arasında olmalıdır.",
+    "slug-length": "Slug 3 ile 40 karakter arasında olmalıdır.",
+    "empty": "Alanlar boş bırakılamaz."
   }
 }

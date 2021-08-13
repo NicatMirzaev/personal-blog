@@ -52,13 +52,12 @@ const SettingsModal = ({ onClose }) => {
     setData({ error: '', loading: true });
     const token = getValue('token');
     if (token) {
-      const authURL = `${API_URL}/users/update`;
       const data = {
         bio: values.bio,
         displayName: values.displayName,
         profileImg: values.profileImg,
       };
-      makeRequest(authURL, 'POST', JSON.stringify(data)).then((res) => {
+      makeRequest('/users/update', 'POST', JSON.stringify(data)).then((res) => {
         if (res.errorCode === undefined) {
           dispatch({
             type: 'SET_USER',

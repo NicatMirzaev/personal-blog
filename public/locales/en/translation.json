@@ -28,10 +28,30 @@
     "save": "Save Changes",
     "saveSuccess": "Changes saved successfully!"
   },
+  "createPost": {
+    "header": "Create new post",
+    "title": "Title",
+    "slug": "Slug",
+    "img": "Image URL",
+    "category": "Category",
+    "summary": "Summary",
+    "share": "Share"
+  },
+  "categories": {
+    "Science": "Science",
+    "Game": "Game",
+    "Technologie": "Technologie",
+    "Mobile": "Mobile",
+    "Software": "Software"
+  },
   "errorCodes": {
     "invalid-token": "User not found or invalid token.",
     "invalid-syntax": "Invalid syntax.",
     "bio-length": "Biography can be up to 300 characters.",
-    "name-length": "The name must be between 3 and 300 characters"
+    "name-length": "The name must be between 3 and 300 characters",
+    "permission": "You dont have permission to access this.",
+    "title-length": "The title must be between 5 and 100 characters.",
+    "slug-length": "The slug must be between 3 and 40 characters.",
+    "empty": "Fields can not be empty."
   }
 }

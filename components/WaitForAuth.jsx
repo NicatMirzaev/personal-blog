@@ -19,9 +19,8 @@ const WaitForAuth = ({ children }) => {
       dispatch({ type: 'SET_USER', payload: { loading: false, data: null } });
       setLoading(false);
     } else {
-      const authURL = `${API_URL}/users/me`;
       dispatch({ type: 'SET_USER', payload: { loading: true, data: null } });
-      makeRequest(authURL, 'GET').then((data) => {
+      makeRequest('/users/me', 'GET').then((data) => {
         if (data.error === undefined) {
           dispatch({
             type: 'SET_USER',

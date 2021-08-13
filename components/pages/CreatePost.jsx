@@ -1,20 +1,32 @@
 import React from 'react';
 import Dropdown from 'react-dropdown';
 import slugify from 'react-slugify';
+import { useTranslation } from 'react-i18next';
 import Input from '../ui/Input';
 import Button from '../ui/Button';
 import MarkdownEditor from '../ui/MarkdownEditor';
-
-const categories = ['Science', 'Game', 'Technologie', 'Mobile', 'Software'];
+import { getValue } from '../../lib/store';
+import { makeRequest } from '../../lib/helpers';
 
 const CreatePostPage = () => {
+  const { t } = useTranslation();
   const [content, setContent] = React.useState('');
+  const categories = [
+    t('categories.Science'),
+    t('categories.Game'),
+    t('categories.Technologie'),
+    t('categories.Mobile'),
+    t('categories.Software'),
+  ];
   const [values, setValues] = React.useState({
     blogTitle: '',
     blogSlug: '',
     blogImg: '',
+    blogSummary: '',
     blogCategory: categories[0],
   });
+
+  const [loading, setLoading] = React.useState({ loading: false, error: '' });
 
   const handleChange = (e) => {
     if (e.target.name === 'blogTitle') {
@@ -30,12 +42,40 @@ const CreatePostPage = () => {
     setValues({ ...values, blogCategory: value });
   };
 
+  const handleSubmit = () => {
+    setLoading({ loading: true, error: '' });
+    const token = getValue('token');
+
+    if (token) {
+      const data = {
+        title: values.blogTitle,
+        img: values.blogImg,
+        summary: values.blogSummary,
+        content,
+        slug: values.blogSlug,
+        category: values.blogSlug,
+      };
+      makeRequest('/blogs/add-blog', 'POST', JSON.stringify(data)).then(
+        (res) => {
+          if (res.errorCode === undefined) {
+            setLoading({ loading: false, error: '' });
+          } else {
+            setLoading({
+              loading: false,
+              error: t(`errorCodes.${res.errorCode}`),
+            });
+          }
+        },
+      );
+    }
+  };
+
   return (
-    <div className="flex pt-7 flex-col md:w-8/12 w-full md:p-0 p-2 h-full mx-auto">
-      <p className="mb-5 text-base font-bold">Create new post</p>
+    <div className="flex pt-7 flex-col md:w-8/12 w-full md:pt-7 p-2 h-full mx-auto">
+      <p className="mb-5 text-base font-bold">{t('createPost.header')}</p>
       <form>
         <label className="mb-5 text-xs font-medium" htmlFor="blogTitle">
-          Title
+          {t('createPost.title')}
         </label>
         <Input
           id="blogTitle"
@@ -45,10 +85,10 @@ const CreatePostPage = () => {
           maxLength="100"
           value={values.blogTitle}
           onChange={handleChange}
-          placeholder="Blog Title"
+          placeholder={t('createPost.title')}
         />
         <label className="mb-5 text-xs font-medium" htmlFor="blogSlug">
-          Slug
+          {t('createPost.slug')}
         </label>
         <Input
           id="blogSlug"
@@ -58,10 +98,10 @@ const CreatePostPage = () => {
           maxLength="40"
           value={values.blogSlug}
           onChange={handleChange}
-          placeholder="Blog Slug"
+          placeholder={t('createPost.slug')}
         />
         <label className="mb-5 text-xs font-medium" htmlFor="blogImg">
-          Image
+          {t('createPost.img')}
         </label>
         <Input
           id="blogImg"
@@ -70,9 +110,11 @@ const CreatePostPage = () => {
           className="my-2"
           value={values.blogImg}
           onChange={handleChange}
-          placeholder="Blog Image URL"
+          placeholder={t('createPost.img')}
         />
-        <p className="mb-5 mt-2 text-xs font-medium">Category</p>
+        <p className="mb-5 mt-2 text-xs font-medium">
+          {t('createPost.category')}
+        </p>
         <Dropdown
           options={categories}
           value={values.blogCategory}
@@ -83,19 +125,29 @@ const CreatePostPage = () => {
           placeholder="Select blog category"
         />
         <label className="mb-5 text-xs font-medium" htmlFor="blogSummary">
-          Summary
+          {t('createPost.summary')}
         </label>
         <Input
           id="blogSummary"
           name="blogSummary"
           type="text"
           textarea
+          value={values.blogSummary}
           onChange={handleChange}
           className="my-2"
-          placeholder="Blog Summary"
+          placeholder={t('createPost.summary')}
         />
         <MarkdownEditor value={content} setValue={setContent} />
-        <Button extraClassName="mt-3 w-full">Share</Button>
+        {loading.error.length > 0 && (
+          <p className="my-2 text-xs font-bold text-red-500">{loading.error}</p>
+        )}
+        <Button
+          onClick={handleSubmit}
+          loading={loading.loading}
+          extraClassName="mt-3 w-full"
+        >
+          {t('createPost.share')}
+        </Button>
       </form>
     </div>
   );
