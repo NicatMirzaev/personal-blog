@@ -5,7 +5,7 @@ import Post from './Post';
 const Posts = ({ posts }) => (
   <div className="flex flex-wrap w-full justify-center">
     {posts.map((post) => (
-      <Post key={post.id} data={post} />
+      <Post key={post._id} data={post} />
     ))}
   </div>
 );

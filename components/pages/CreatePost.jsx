@@ -53,9 +53,9 @@ const CreatePostPage = () => {
         summary: values.blogSummary,
         content,
         slug: values.blogSlug,
-        category: values.blogSlug,
+        category: values.blogCategory,
       };
-      makeRequest('/blogs/add-blog', 'POST', JSON.stringify(data)).then(
+      makeRequest('/posts/add-post', 'POST', JSON.stringify(data)).then(
         (res) => {
           if (res.errorCode === undefined) {
             setLoading({ loading: false, error: '' });

@@ -4,6 +4,7 @@ import React from 'react';
 import ReactMde from 'react-mde';
 import PropTypes from 'prop-types';
 import * as Showdown from 'showdown';
+import * as showdownHighlight from 'showdown-highlight';
 import 'react-mde/lib/styles/css/react-mde-all.css';
 
 const converter = new Showdown.Converter({
@@ -11,6 +12,12 @@ const converter = new Showdown.Converter({
   simplifiedAutoLink: true,
   strikethrough: true,
   tasklists: true,
+  extensions: [
+    showdownHighlight({
+      // Whether to add the classes to the <pre> tag
+      pre: true,
+    }),
+  ],
 });
 
 const style = {

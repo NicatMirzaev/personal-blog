@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import ViewsIcon from '../icons/Views';
@@ -7,61 +8,61 @@ import MessageIcon from '../icons/Message';
 import { kFormatter } from '../../lib/helpers';
 
 const Post = ({ data }) => (
-  <Link href={`/post/${data.slug}`}>
-    <a>
-      <div className="flex flex-col xs:w-60 w-54 rounded border-solid border border-borderColor bg-white mr-5 mb-5">
-        <img src={data.imageSrc} alt="post" className="w-full" />
+  <div className="flex flex-col xs:w-60 w-54 rounded border-solid border border-borderColor bg-white mr-5 mb-5">
+    <Link href={`/post/${data.slug}`}>
+      <a>
+        <img src={data.img} alt="post" className="w-full" />
         <div className="flex flex-col w-full p-5">
           <div className="flex w-full justify-between items-center mb-2">
             <span className="text-xs font-semibold text-blue-600 font-sans">
               {data.category}
             </span>
             <span className="text-xs font-semibold text-gray-500">
-              {data.publishDate}
+              {moment(data.createdAt).format('DD/MM/YYYY')}
             </span>
           </div>
           <p className="mb-2 text-base font-bold">{data.title}</p>
           <p className="text-sm font-medium text-gray-500 mb-5">
-            {data.shortContent}
+            {data.summary}
           </p>
           <div className="flex items-center w-full">
             <div className="flex items-center mr-6">
               <ViewsIcon />
               <span className="ml-2 text-xs font-normal text-gray-500">
-                {kFormatter(data.viewCount)}
+                {kFormatter(data.views)}
               </span>
             </div>
             <div className="flex items-center mr-6">
               <HeartIcon />
               <span className="ml-2 text-xs font-normal text-gray-500">
-                {kFormatter(data.likeCount)}
+                {kFormatter(data.likes)}
               </span>
             </div>
             <div className="flex items-center">
               <MessageIcon />
               <span className="ml-2 text-xs font-normal text-gray-500">
-                {kFormatter(data.commentCount)}
+                {kFormatter(data.comments)}
               </span>
             </div>
           </div>
         </div>
-      </div>
-    </a>
-  </Link>
+      </a>
+    </Link>
+  </div>
 );
 
 Post.propTypes = {
   data: {
-    id: PropTypes.number.isRequired,
+    _id: PropTypes.number.isRequired,
     slug: PropTypes.string.isRequired,
-    imageSrc: PropTypes.string.isRequired,
+    img: PropTypes.string.isRequired,
     category: PropTypes.string.isRequired,
-    publishDate: PropTypes.string.isRequired,
+    createdAt: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
-    shortContent: PropTypes.string.isRequired,
-    viewCount: PropTypes.number.isRequired,
-    likeCount: PropTypes.number.isRequired,
-    commentCount: PropTypes.number.isRequired,
+    summary: PropTypes.string.isRequired,
+    views: PropTypes.number.isRequired,
+    likes: PropTypes.number.isRequired,
+    comments: PropTypes.number.isRequired,
   }.isRequired,
 };
 
