@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { makeRequest } from '../lib/helpers';
 import Home from '../components/pages/Home';
