@@ -7,10 +7,10 @@ const Index = ({ popularPosts, latestPosts }) => (
   <Home popularPosts={popularPosts} latestPosts={latestPosts} />
 );
 
-Index.getInitialProps = async () => {
+export async function getServerSideProps() {
   const popularPosts = await makeRequest('/posts/popular-posts', 'GET');
   const latestPosts = await makeRequest('/posts/latest-posts', 'GET');
-  return { popularPosts, latestPosts };
-};
+  return { props: { popularPosts, latestPosts } };
+}
 
 export default Index;
