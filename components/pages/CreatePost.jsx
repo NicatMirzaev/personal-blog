@@ -6,7 +6,10 @@ import Input from '../ui/Input';
 import Button from '../ui/Button';
 import MarkdownEditor from '../ui/MarkdownEditor';
 import { getValue } from '../../lib/store';
-import { makeRequest } from '../../lib/helpers';
+import {
+  makeRequest,
+  categoryConvertTurkishToEnglish,
+} from '../../lib/helpers';
 
 const CreatePostPage = () => {
   const { t } = useTranslation();
@@ -53,7 +56,7 @@ const CreatePostPage = () => {
         summary: values.blogSummary,
         content,
         slug: values.blogSlug,
-        category: values.blogCategory,
+        category: categoryConvertTurkishToEnglish(values.blogCategory),
       };
       makeRequest('/posts/add-post', 'POST', JSON.stringify(data)).then(
         (res) => {

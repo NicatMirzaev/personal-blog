@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
 import Layout from '../Layout';
 import Footer from '../ui/Footer';
 import Posts from '../ui/Posts';
@@ -29,6 +30,38 @@ const Home = ({ popularPosts, latestPosts }) => {
       </div>
     </Layout>
   );
+};
+
+Home.propTypes = {
+  popularPosts: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.number.isRequired,
+      slug: PropTypes.string.isRequired,
+      img: PropTypes.string.isRequired,
+      category: PropTypes.string.isRequired,
+      createdAt: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+      summary: PropTypes.string.isRequired,
+      views: PropTypes.number.isRequired,
+      likes: PropTypes.number.isRequired,
+      comments: PropTypes.number.isRequired,
+    }),
+  ).isRequired,
+  latestPosts: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.number.isRequired,
+      slug: PropTypes.string.isRequired,
+      img: PropTypes.string.isRequired,
+      category: PropTypes.string.isRequired,
+      createdAt: PropTypes.number.isRequired,
+      content: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      summary: PropTypes.string.isRequired,
+      views: PropTypes.number.isRequired,
+      likes: PropTypes.number.isRequired,
+      comments: PropTypes.number.isRequired,
+    }),
+  ).isRequired,
 };
 
 export default Home;

@@ -43,7 +43,7 @@ const MakeComment = () => {
   );
 };
 
-const PostDetails = ({ post }) => {
+const PostDetails = ({ post, otherPosts }) => {
   const { data } = useAuthContext();
   const { t } = useTranslation();
   const router = useRouter();
@@ -56,7 +56,7 @@ const PostDetails = ({ post }) => {
   return (
     <Layout title={post.title}>
       <div className="flex w-full pt-2 justify-center">
-        <div className="flex flex-col w-3/5 h-full border border-borderColor rounded bg-white">
+        <div className="flex flex-col md:w-3/5 w-full m-2 h-full border border-borderColor rounded bg-white">
           <img src={post.img} alt="post" className="w-full mb-5" />
           <div className="flex flex-col w-full h-full p-2">
             <div className="flex items-center self-end mb-5">
@@ -120,13 +120,13 @@ const PostDetails = ({ post }) => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col ml-24 h-full">
+        <div className="md:flex hidden flex-col ml-24 h-full">
           <p className="mb-5 text-sm font-medium ">
             {t('postDetails.otherPosts')}
           </p>
-          <Post data={post} />
-          <Post data={post} />
-          <Post data={post} />
+          {otherPosts.map((postData) => (
+            <Post key={postData._id} data={postData} />
+          ))}
         </div>
       </div>
     </Layout>
@@ -147,6 +147,21 @@ PostDetails.propTypes = {
     likes: PropTypes.number.isRequired,
     comments: PropTypes.number.isRequired,
   }.isRequired,
+  otherPosts: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.number.isRequired,
+      slug: PropTypes.string.isRequired,
+      img: PropTypes.string.isRequired,
+      category: PropTypes.string.isRequired,
+      createdAt: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+      content: PropTypes.string.isRequired,
+      summary: PropTypes.string.isRequired,
+      views: PropTypes.number.isRequired,
+      likes: PropTypes.number.isRequired,
+      comments: PropTypes.number.isRequired,
+    }),
+  ).isRequired,
 };
 
 export default PostDetails;

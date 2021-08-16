@@ -15,7 +15,7 @@ const Comment = () => {
         </a>
       </Link>
       <div className="flex flex-col ml-2 justify-center w-full">
-        <div className="flex items-center justify-between w-full">
+        <div className="flex items-center justify-between w-full mb-2">
           <div className="flex items-center">
             <Link href={`user/${data?._id}`}>
               <a className="mr-2 text-md font-bold">{data?.displayName}</a>
