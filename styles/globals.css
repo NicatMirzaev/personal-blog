@@ -23,9 +23,19 @@ body,
 h1,
 h2,
 h3,
-h4,
-p {
+h4 {
   line-height: 1.6;
+  margin-bottom: 16px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #eee;
+}
+
+pre {
+  background: #f7f7f7;
+  padding: 16px;
+  font-size: 85%;
+  margin-top: 6px;
+  overflow: auto;
 }
 
 h1,

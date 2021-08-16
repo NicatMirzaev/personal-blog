@@ -44,6 +44,16 @@
     "Mobile": "Mobile",
     "Software": "Software"
   },
+  "postDetails": {
+    "otherPosts": "Other posts in this category",
+    "comments": "Comments",
+    "makeComment": "Make a comment",
+    "writeSomething": "Write something",
+    "send": "Send",
+    "youMust": "You must",
+    "signin": "sign in",
+    "toMake": "to make a comment."
+  },
   "errorCodes": {
     "invalid-token": "User not found or invalid token.",
     "invalid-syntax": "Invalid syntax.",

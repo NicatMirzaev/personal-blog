@@ -44,6 +44,16 @@
     "Mobile": "Mobil",
     "Software": "Yazılım"
   },
+  "postDetails": {
+    "otherPosts": "Bu kategoriye ait diğer gönderiler",
+    "comments": "Yorumlar",
+    "makeComment": "Yorum Yap",
+    "writeSomething": "Bir şeyler yaz...",
+    "send": "Gönder",
+    "youMust": "Yorum yapmak için",
+    "signin": "giriş",
+    "toMake": "yapmalısınız."
+  },
   "errorCodes": {
     "invalid-token": "Kullanıcı bulunamadı veya geçersiz token.",
     "invalid-syntax": "Geçersiz syntax yapısı.",

@@ -8,7 +8,10 @@ const CreatePost = () => {
   const user = useAuthContext();
   const router = useRouter();
 
-  if (!user.data && user.loading === false) {
+  if (
+    (!user.data && user.loading === false) ||
+    (user.loading === false && user.data?.moderator !== true)
+  ) {
     router.push('/');
     return null;
   }
