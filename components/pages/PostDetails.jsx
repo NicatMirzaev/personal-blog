@@ -20,10 +20,11 @@ import Post from '../ui/Post';
 import Comment from '../ui/Comment';
 import { useAuthContext } from '../AuthProvider';
 
-const MakeComment = ({ openModal }) => {
+// eslint-disable-next-line react/prop-types
+const MakeComment = ({ openModal, onComment }) => {
   const { data } = useAuthContext();
   const { t } = useTranslation();
-
+  const [message, setMessage] = React.useState('');
   if (!data) {
     return (
       <div className="flex p-5 w-full border border-red-500 bg-red-100">
@@ -41,13 +42,20 @@ const MakeComment = ({ openModal }) => {
   return (
     <div className="flex flex-col p-5 w-full border border-borderColor bg-blue-100">
       <p className="mb-5 text-md font-bold">{t('postDetails.makeComment')}</p>
-      <Input textarea placeholder={t('postDetails.writeSomething')} />
-      <Button extraClassName="mt-5">{t('postDetails.send')}</Button>
+      <Input
+        textarea
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder={t('postDetails.writeSomething')}
+      />
+      <Button onClick={() => onComment(message)} extraClassName="mt-5">
+        {t('postDetails.send')}
+      </Button>
     </div>
   );
 };
 
-const PostDetails = ({ post, otherPosts, handleLike }) => {
+const PostDetails = ({ post, otherPosts, comments, onComment, handleLike }) => {
   const { data } = useAuthContext();
   const { t } = useTranslation();
   const router = useRouter();
@@ -62,7 +70,7 @@ const PostDetails = ({ post, otherPosts, handleLike }) => {
     if (!data) {
       return setLoginModal(true);
     }
-    handleLike();
+    return handleLike();
   };
   return (
     <Layout title={post.title}>
@@ -133,11 +141,13 @@ const PostDetails = ({ post, otherPosts, handleLike }) => {
                   {t('postDetails.comments')}
                 </p>
               </div>
-              <MakeComment openModal={() => setLoginModal(true)} />
-              <Comment />
-              <Comment />
-              <Comment />
-              <Comment />
+              <MakeComment
+                onComment={(message) => onComment(message)}
+                openModal={() => setLoginModal(true)}
+              />
+              {comments.map((comment) => (
+                <Comment key={comment._id} data={comment} />
+              ))}
             </div>
           </div>
         </div>
@@ -156,6 +166,7 @@ const PostDetails = ({ post, otherPosts, handleLike }) => {
 
 PostDetails.propTypes = {
   handleLike: PropTypes.func.isRequired,
+  onComment: PropTypes.func.isRequired,
   post: {
     _id: PropTypes.number.isRequired,
     slug: PropTypes.string.isRequired,
@@ -182,6 +193,15 @@ PostDetails.propTypes = {
       views: PropTypes.number.isRequired,
       likes: PropTypes.number.isRequired,
       comments: PropTypes.number.isRequired,
+    }),
+  ).isRequired,
+  comments: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.number.isRequired,
+      senderId: PropTypes.string.isRequired,
+      postId: PropTypes.string.isRequired,
+      message: PropTypes.string.isRequired,
+      createdAt: PropTypes.number.isRequired,
     }),
   ).isRequired,
 };
