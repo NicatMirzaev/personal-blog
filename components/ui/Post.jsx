@@ -7,10 +7,11 @@ import ViewsIcon from '../icons/Views';
 import HeartIcon from '../icons/Heart';
 import MessageIcon from '../icons/Message';
 import { kFormatter } from '../../lib/helpers';
+import { useAuthContext } from '../AuthProvider';
 
 const Post = ({ data }) => {
   const { t } = useTranslation();
-  console.log(data);
+  const userData = useAuthContext().data;
   return (
     <div className="flex flex-col xs:w-60 w-54 rounded border-solid border border-borderColor bg-white mr-5 mb-5">
       <Link href={`/post/${data.slug}`}>
@@ -37,7 +38,11 @@ const Post = ({ data }) => {
                 </span>
               </div>
               <div className="flex items-center mr-6">
-                <HeartIcon />
+                {userData?.likes.includes(data._id) === true ? (
+                  <HeartIcon fill="red" stroke="red" />
+                ) : (
+                  <HeartIcon />
+                )}
                 <span className="ml-2 text-xs font-normal text-gray-500">
                   {kFormatter(data.likes)}
                 </span>
@@ -66,6 +71,7 @@ Post.propTypes = {
     title: PropTypes.string.isRequired,
     summary: PropTypes.string.isRequired,
     views: PropTypes.number.isRequired,
+    isLiked: PropTypes.bool.isRequired,
     likes: PropTypes.number.isRequired,
     comments: PropTypes.number.isRequired,
   }.isRequired,

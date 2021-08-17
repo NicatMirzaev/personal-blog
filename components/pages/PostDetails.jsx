@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import Layout from '../Layout';
 import Button from '../ui/Button';
+import LoginModal from '../ui/LoginModal';
 import Input from '../ui/Input';
 import ViewsIcon from '../icons/Views';
 import HeartIcon from '../icons/Heart';
@@ -19,7 +20,7 @@ import Post from '../ui/Post';
 import Comment from '../ui/Comment';
 import { useAuthContext } from '../AuthProvider';
 
-const MakeComment = () => {
+const MakeComment = ({ openModal }) => {
   const { data } = useAuthContext();
   const { t } = useTranslation();
 
@@ -27,7 +28,10 @@ const MakeComment = () => {
     return (
       <div className="flex p-5 w-full border border-red-500 bg-red-100">
         {t('postDetails.youMust')}
-        <span className="cursor-pointer px-2 text-md font-medium text-blue-500">
+        <span
+          onClick={openModal}
+          className="cursor-pointer px-2 text-md font-medium text-blue-500"
+        >
           {t('postDetails.signin')}
         </span>{' '}
         {t('postDetails.toMake')}
@@ -43,18 +47,28 @@ const MakeComment = () => {
   );
 };
 
-const PostDetails = ({ post, otherPosts }) => {
+const PostDetails = ({ post, otherPosts, handleLike }) => {
   const { data } = useAuthContext();
   const { t } = useTranslation();
   const router = useRouter();
   const remarkGfm = dynamic(() => import('remark-gfm'), { ssr: false });
+  const [loginModal, setLoginModal] = React.useState(false);
 
   if (post.errorCode !== undefined) {
     router.push('/');
     return null;
   }
+  const onClickLike = () => {
+    if (!data) {
+      return setLoginModal(true);
+    }
+    handleLike();
+  };
   return (
     <Layout title={post.title}>
+      {loginModal === true && (
+        <LoginModal onClose={() => setLoginModal(false)} />
+      )}
       <div className="flex w-full pt-2 justify-center">
         <div className="flex flex-col md:w-3/5 w-full m-2 h-full border border-borderColor rounded bg-white">
           <img src={post.img} alt="post" className="w-full mb-5" />
@@ -74,19 +88,26 @@ const PostDetails = ({ post, otherPosts }) => {
               {post.title}
             </p>
             <div className="flex w-full justify-center pb-3 items-center border-b border-borderColor mb-5">
-              <div className="flex items-center mr-6">
+              <div className="flex cursor-pointer hover:bg-gray-100 p-2 rounded-full items-center mr-6">
                 <ViewsIcon />
                 <span className="ml-2 text-xs font-normal text-gray-500">
                   {kFormatter(post.views)}
                 </span>
               </div>
-              <div className="flex items-center mr-6">
-                <HeartIcon />
+              <div
+                onClick={onClickLike}
+                className="flex cursor-pointer hover:bg-gray-100 p-2 rounded-full items-center mr-6"
+              >
+                {data?.likes.includes(post._id) === true ? (
+                  <HeartIcon fill="red" stroke="red" />
+                ) : (
+                  <HeartIcon />
+                )}
                 <span className="ml-2 text-xs font-normal text-gray-500">
                   {kFormatter(post.likes)}
                 </span>
               </div>
-              <div className="flex items-center">
+              <div className="flex cursor-pointer hover:bg-gray-100 p-2 rounded-full items-center">
                 <MessageIcon />
                 <span className="ml-2 text-xs font-normal text-gray-500">
                   {kFormatter(post.comments)}
@@ -112,7 +133,7 @@ const PostDetails = ({ post, otherPosts }) => {
                   {t('postDetails.comments')}
                 </p>
               </div>
-              <MakeComment />
+              <MakeComment openModal={() => setLoginModal(true)} />
               <Comment />
               <Comment />
               <Comment />
@@ -134,6 +155,7 @@ const PostDetails = ({ post, otherPosts }) => {
 };
 
 PostDetails.propTypes = {
+  handleLike: PropTypes.func.isRequired,
   post: {
     _id: PropTypes.number.isRequired,
     slug: PropTypes.string.isRequired,

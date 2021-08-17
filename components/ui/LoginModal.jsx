@@ -2,11 +2,13 @@ import React from 'react';
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import { useRouter } from 'next/router';
 import Button from './Button';
 import GoogleIcon from '../icons/Google';
 import TwitterIcon from '../icons/Twitter';
 import GithubIcon from '../icons/Github';
 import { API_URL } from '../../lib/config';
+import { setValue } from '../../lib/store';
 
 const customStyles = {
   content: {
@@ -21,7 +23,7 @@ const customStyles = {
 
 const LoginModal = ({ onClose }) => {
   const { t } = useTranslation();
-
+  const router = useRouter();
   return (
     <div>
       <Modal
@@ -34,7 +36,10 @@ const LoginModal = ({ onClose }) => {
         <div className="flex flex-col w-full sm:p-5 p-2 items-center justify-center">
           <p className="mb-5 text-sm font-bold">{t('navbar.signIn')}</p>
           <Button
-            link={`${API_URL}/auth/google`}
+            onClick={() => {
+              setValue('redirectTo', router.asPath);
+              window.location.href = `${API_URL}/auth/google`;
+            }}
             color="secondary"
             extraClassName="mb-4 text-base w-full"
           >
@@ -42,7 +47,10 @@ const LoginModal = ({ onClose }) => {
             {t('signIn.withGoogle')}
           </Button>
           <Button
-            link={`${API_URL}/auth/twitter`}
+            onClick={() => {
+              setValue('redirectTo', router.asPath);
+              window.location.href = `${API_URL}/auth/twitter`;
+            }}
             color="secondary"
             extraClassName="mb-4 text-base w-full"
           >
@@ -50,7 +58,10 @@ const LoginModal = ({ onClose }) => {
             {t('signIn.withTwitter')}
           </Button>
           <Button
-            link={`${API_URL}/auth/github`}
+            onClick={() => {
+              setValue('redirectTo', router.asPath);
+              window.location.href = `${API_URL}/auth/github`;
+            }}
             color="secondary"
             extraClassName="mb-4 text-base w-full"
           >

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from './AuthProvider';
 import { getValue } from '../lib/store';
-import { API_URL } from '../lib/config';
 import { makeRequest } from '../lib/helpers';
 import CenterLoading from './ui/CenterLoading';
 
