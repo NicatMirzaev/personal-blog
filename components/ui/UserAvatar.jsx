@@ -12,7 +12,7 @@ const avatarSize = {
 };
 
 const UserAvatar = (props) => {
-  const [isError, setError] = useState(false);
+  const [error, setError] = useState(false);
   const { src, size, extraClassName, hover, username } = props;
   return (
     <div
@@ -26,14 +26,14 @@ const UserAvatar = (props) => {
       <img
         alt={username ? `${username}-s-avatar` : 'your-avatar'}
         className="rounded-full w-full h-full object-cover"
-        onError={() => setError(true)}
         src={
-          isError
+          error || !src
             ? `https://ui-avatars.com/api/${
-                username ? `&name=${username}` : '&name'
+                username ? `&name=${username.split(' ').join('')}` : '&name'
               }&rounded=true&background=B23439&bold=true&color=FFFFFF`
             : src
         }
+        onError={() => setError(true)}
       />
       {hover && (
         <div className="bg-primary-900 hover:opacity-20 transition duration-200 opacity-0 absolute w-full h-full top-0 left-0 rounded-full" />

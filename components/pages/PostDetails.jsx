@@ -62,16 +62,16 @@ const PostDetails = ({ post, otherPosts, comments, onComment, handleLike }) => {
   const remarkGfm = dynamic(() => import('remark-gfm'), { ssr: false });
   const [loginModal, setLoginModal] = React.useState(false);
 
-  if (post.errorCode !== undefined) {
-    router.push('/');
-    return null;
-  }
   const onClickLike = () => {
     if (!data) {
       return setLoginModal(true);
     }
     return handleLike();
   };
+  if (post.errorCode !== undefined) {
+    router.push('/');
+    return null;
+  }
   return (
     <Layout title={post.title}>
       {loginModal === true && (

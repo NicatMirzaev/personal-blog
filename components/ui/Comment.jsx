@@ -21,7 +21,8 @@ const Comment = ({ data }) => {
       isMounted = false;
     };
   }, [data]);
-  console.log(senderDetails.profileImg);
+
+  if (Object.keys(senderDetails).length === 0) return null;
   return (
     <div className="flex w-full p-2 rounded-lg mt-5 border">
       <Link href={`/user/${data.senderId}`}>
