@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-param-reassign */
 import React from 'react';
+import { useRouter } from 'next/router';
 import { makeRequest } from '../../lib/helpers';
 import { useAuth, useAuthContext } from '../../components/AuthProvider';
 import PostDetails from '../../components/pages/PostDetails';
@@ -8,6 +9,7 @@ import PostDetails from '../../components/pages/PostDetails';
 const Post = ({ data, otherPosts, comments }) => {
   const dispatch = useAuth();
   const userData = useAuthContext().data;
+  const router = useRouter();
   const [postData, setPostData] = React.useState(data);
   const [commentsData, setCommentsData] = React.useState(comments);
   const handleLike = () => {
@@ -37,11 +39,41 @@ const Post = ({ data, otherPosts, comments }) => {
         if (res.errorCode === undefined) {
           const commentsArray = commentsData;
           commentsArray.push(res.comment);
+          commentsArray.sort((a, b) => b.createdAt - a.createdAt);
           setCommentsData(commentsArray);
           setPostData(res.post);
         }
       },
     );
+  };
+
+  const onDeleteComment = (commentId) => {
+    if (!userData) return;
+    makeRequest(
+      '/posts/delete-comment',
+      'POST',
+      JSON.stringify({ commentId }),
+    ).then((res) => {
+      if (res.errorCode === undefined && res.deleted === true) {
+        const commentsArray = commentsData.filter(
+          (comment) => comment._id !== commentId,
+        );
+        setCommentsData(commentsArray);
+      }
+    });
+  };
+
+  const onDeletePost = () => {
+    if (!userData) return;
+    makeRequest(
+      '/posts/delete-post',
+      'POST',
+      JSON.stringify({ postId: postData._id }),
+    ).then((res) => {
+      if (res.errorCode === undefined && res.deleted === true) {
+        router.push('/');
+      }
+    });
   };
   return (
     <PostDetails
@@ -49,6 +81,8 @@ const Post = ({ data, otherPosts, comments }) => {
       otherPosts={otherPosts}
       comments={commentsData}
       onComment={(message) => onComment(message)}
+      onDeleteComment={(commentId) => onDeleteComment(commentId)}
+      onDeletePost={onDeletePost}
       handleLike={handleLike}
     />
   );

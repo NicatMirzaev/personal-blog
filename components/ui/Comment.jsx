@@ -7,7 +7,7 @@ import UserAvatar from './UserAvatar';
 import TrashIcon from '../icons/Trash';
 import { makeRequest } from '../../lib/helpers';
 
-const Comment = ({ data }) => {
+const Comment = ({ data, onDeleteComment }) => {
   const userData = useAuthContext().data;
   const [senderDetails, setSenderDetails] = React.useState({});
   React.useEffect(() => {
@@ -45,9 +45,12 @@ const Comment = ({ data }) => {
               {moment(data.createdAt).fromNow()}
             </span>
           </div>
-          {userData?.moderator === true && (
-            <TrashIcon className="cursor-pointer" />
-          )}
+          {userData?.moderator === true || userData?._id === data.senderId ? (
+            <TrashIcon
+              onClick={() => onDeleteComment(data._id)}
+              className="cursor-pointer"
+            />
+          ) : null}
         </div>
         <p className="text-sm text-gray-500">{data.message}</p>
       </div>
@@ -56,6 +59,7 @@ const Comment = ({ data }) => {
 };
 
 Comment.propTypes = {
+  onDeleteComment: PropTypes.func.isRequired,
   data: {
     _id: PropTypes.number.isRequired,
     senderId: PropTypes.string.isRequired,

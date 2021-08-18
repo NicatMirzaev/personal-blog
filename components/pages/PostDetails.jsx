@@ -55,7 +55,15 @@ const MakeComment = ({ openModal, onComment }) => {
   );
 };
 
-const PostDetails = ({ post, otherPosts, comments, onComment, handleLike }) => {
+const PostDetails = ({
+  post,
+  otherPosts,
+  comments,
+  onComment,
+  onDeleteComment,
+  onDeletePost,
+  handleLike,
+}) => {
   const { data } = useAuthContext();
   const { t } = useTranslation();
   const router = useRouter();
@@ -81,7 +89,10 @@ const PostDetails = ({ post, otherPosts, comments, onComment, handleLike }) => {
         <div className="flex flex-col md:w-3/5 w-full m-2 h-full border border-borderColor rounded bg-white">
           <img src={post.img} alt="post" className="w-full mb-5" />
           <div className="flex flex-col w-full h-full p-2">
-            <div className="flex items-center self-end mb-5">
+            <div
+              onClick={onDeletePost}
+              className="flex items-center self-end mb-5"
+            >
               {data?.moderator === true && (
                 <EditIcon className="mr-2 cursor-pointer" />
               )}
@@ -146,7 +157,11 @@ const PostDetails = ({ post, otherPosts, comments, onComment, handleLike }) => {
                 openModal={() => setLoginModal(true)}
               />
               {comments.map((comment) => (
-                <Comment key={comment._id} data={comment} />
+                <Comment
+                  key={comment._id}
+                  data={comment}
+                  onDeleteComment={(commentId) => onDeleteComment(commentId)}
+                />
               ))}
             </div>
           </div>
@@ -165,6 +180,8 @@ const PostDetails = ({ post, otherPosts, comments, onComment, handleLike }) => {
 };
 
 PostDetails.propTypes = {
+  onDeleteComment: PropTypes.func.isRequired,
+  onDeletePost: PropTypes.func.isRequired,
   handleLike: PropTypes.func.isRequired,
   onComment: PropTypes.func.isRequired,
   post: {
