@@ -89,15 +89,18 @@ const PostDetails = ({
         <div className="flex flex-col md:w-3/5 w-full m-2 h-full border border-borderColor rounded bg-white">
           <img src={post.img} alt="post" className="w-full mb-5" />
           <div className="flex flex-col w-full h-full p-2">
-            <div
-              onClick={onDeletePost}
-              className="flex items-center self-end mb-5"
-            >
+            <div className="flex items-center self-end mb-5">
               {data?.moderator === true && (
-                <EditIcon className="mr-2 cursor-pointer" />
+                <EditIcon
+                  onClick={() => router.push(`/edit-post/${post._id}`)}
+                  className="mr-2 cursor-pointer"
+                />
               )}
               {data?.moderator === true && (
-                <TrashIcon className="mr-2 cursor-pointer" />
+                <TrashIcon
+                  onClick={onDeletePost}
+                  className="mr-2 cursor-pointer"
+                />
               )}
               <span className="text-xs font-semibold text-blue-500">
                 {moment(post.createdAt).format('DD/MM/YYYY')}

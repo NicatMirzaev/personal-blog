@@ -2,14 +2,20 @@ import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
-import { useAuthContext } from '../AuthProvider';
+import { useAuth, useAuthContext } from '../AuthProvider';
+import LoginModal from './LoginModal';
 import UserAvatar from './UserAvatar';
 import TrashIcon from '../icons/Trash';
-import { makeRequest } from '../../lib/helpers';
+import HeartIcon from '../icons/Heart';
+import { makeRequest, kFormatter } from '../../lib/helpers';
 
 const Comment = ({ data, onDeleteComment }) => {
   const userData = useAuthContext().data;
+  const dispatch = useAuth();
   const [senderDetails, setSenderDetails] = React.useState({});
+  const [commentData, setCommentData] = React.useState(data);
+  const [loginModal, setLoginModal] = React.useState(false);
+
   React.useEffect(() => {
     let isMounted = true;
     makeRequest(`/users/get-user?id=${data.senderId}`, 'GET').then((res) => {
@@ -22,10 +28,33 @@ const Comment = ({ data, onDeleteComment }) => {
     };
   }, [data]);
 
+  const handleLike = () => {
+    if (!userData) {
+      setLoginModal(true);
+      return;
+    }
+    makeRequest(
+      '/posts/like-comment',
+      'POST',
+      JSON.stringify({ commentId: data._id }),
+    ).then((res) => {
+      if (res.errorCode === undefined) {
+        setCommentData(res.comment);
+        dispatch({
+          type: 'SET_USER',
+          payload: { loading: false, data: res.user },
+        });
+      }
+    });
+  };
+
   if (Object.keys(senderDetails).length === 0) return null;
   return (
     <div className="flex w-full p-2 rounded-lg mt-5 border">
-      <Link href={`/user/${data.senderId}`}>
+      {loginModal === true && (
+        <LoginModal onClose={() => setLoginModal(false)} />
+      )}
+      <Link href={`/user/${commentData.senderId}`}>
         <a>
           <UserAvatar
             src={senderDetails?.profileImg}
@@ -36,23 +65,38 @@ const Comment = ({ data, onDeleteComment }) => {
       <div className="flex flex-col ml-2 justify-center w-full">
         <div className="flex items-center justify-between w-full mb-2">
           <div className="flex items-center">
-            <Link href={`/user/${data.senderId}`}>
+            <Link href={`/user/${commentData.senderId}`}>
               <a className="mr-2 text-md font-bold">
                 {senderDetails?.displayName}
               </a>
             </Link>
             <span className="text-sm text-gray-500">
-              {moment(data.createdAt).fromNow()}
+              {moment(commentData.createdAt).fromNow()}
             </span>
           </div>
           {userData?.moderator === true || userData?._id === data.senderId ? (
             <TrashIcon
-              onClick={() => onDeleteComment(data._id)}
+              onClick={() => onDeleteComment(commentData._id)}
               className="cursor-pointer"
             />
           ) : null}
         </div>
-        <p className="text-sm text-gray-500">{data.message}</p>
+        <p className="text-sm text-gray-500">{commentData.message}</p>
+        <div className="flex w-full justify-end items-center">
+          <div
+            onClick={handleLike}
+            className="flex cursor-pointer hover:bg-gray-100 p-2 rounded-full items-center mr-2"
+          >
+            {userData?.likes.includes(commentData._id) === true ? (
+              <HeartIcon fill="red" stroke="red" />
+            ) : (
+              <HeartIcon />
+            )}
+            <span className="ml-2 text-xs font-normal text-gray-500">
+              {kFormatter(commentData.likes)}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );

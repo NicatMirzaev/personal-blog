@@ -1,21 +1,24 @@
 import React from 'react';
-import Dropdown from 'react-dropdown';
 import slugify from 'react-slugify';
+import PropTypes from 'prop-types';
+import Dropdown from 'react-dropdown';
 import { useRouter } from 'next/router';
-import { useTranslation } from 'react-i18next';
+import MarkdownEditor from '../ui/MarkdownEditor';
 import Input from '../ui/Input';
 import Button from '../ui/Button';
-import MarkdownEditor from '../ui/MarkdownEditor';
-import { getValue } from '../../lib/store';
+import { useTranslation } from 'react-i18next';
+import { useAuthContext } from '../AuthProvider';
 import {
   makeRequest,
   categoryConvertTurkishToEnglish,
 } from '../../lib/helpers';
 
-const CreatePostPage = () => {
+const EditPostPage = ({ postData }) => {
   const { t } = useTranslation();
+  const { data } = useAuthContext();
   const router = useRouter();
-  const [content, setContent] = React.useState('');
+  const [content, setContent] = React.useState(postData?.content);
+  const [loading, setLoading] = React.useState({ loading: false, error: '' });
   const categories = [
     t('categories.Science'),
     t('categories.Game'),
@@ -24,14 +27,12 @@ const CreatePostPage = () => {
     t('categories.Software'),
   ];
   const [values, setValues] = React.useState({
-    blogTitle: '',
-    blogSlug: '',
-    blogImg: '',
-    blogSummary: '',
-    blogCategory: categories[0],
+    blogTitle: postData?.title,
+    blogSlug: postData?.slug,
+    blogImg: postData?.img,
+    blogSummary: postData?.summary,
+    blogCategory: postData?.category,
   });
-
-  const [loading, setLoading] = React.useState({ loading: false, error: '' });
 
   const handleChange = (e) => {
     if (e.target.name === 'blogTitle') {
@@ -48,37 +49,33 @@ const CreatePostPage = () => {
   };
 
   const handleSubmit = () => {
+    const reqData = {
+      postId: postData._id,
+      title: values.blogTitle,
+      slug: values.blogSlug,
+      content,
+      img: values.blogImg,
+      summary: values.blogSummary,
+      category: categoryConvertTurkishToEnglish(values.blogCategory),
+    };
     setLoading({ loading: true, error: '' });
-    const token = getValue('token');
-
-    if (token) {
-      const data = {
-        title: values.blogTitle,
-        img: values.blogImg,
-        summary: values.blogSummary,
-        content,
-        slug: values.blogSlug,
-        category: categoryConvertTurkishToEnglish(values.blogCategory),
-      };
-      makeRequest('/posts/add-post', 'POST', JSON.stringify(data)).then(
-        (res) => {
-          if (res.errorCode === undefined) {
-            setLoading({ loading: false, error: '' });
-            router.push(`/post/${values.blogSlug}`);
-          } else {
-            setLoading({
-              loading: false,
-              error: t(`errorCodes.${res.errorCode}`),
-            });
-          }
-        },
-      );
-    }
+    makeRequest('/posts/update-post', 'POST', JSON.stringify(reqData)).then(
+      (res) => {
+        if (res.errorCode === undefined) {
+          router.push(`/post/${postData.slug}`);
+        } else {
+          setLoading({
+            loading: false,
+            error: t(`errorCodes.${res.errorCode}`),
+          });
+        }
+      },
+    );
   };
 
   return (
     <div className="flex pt-7 flex-col md:w-8/12 w-full md:pt-7 p-2 h-full mx-auto">
-      <p className="mb-5 text-base font-bold">{t('createPost.header')}</p>
+      <p className="mb-5 text-base font-bold">Edit Post</p>
       <form>
         <label className="mb-5 text-xs font-medium" htmlFor="blogTitle">
           {t('createPost.title')}
@@ -152,11 +149,27 @@ const CreatePostPage = () => {
           loading={loading.loading}
           extraClassName="mt-3 w-full"
         >
-          {t('createPost.share')}
+          Save
         </Button>
       </form>
     </div>
   );
 };
 
-export default CreatePostPage;
+EditPostPage.propTypes = {
+  postData: {
+    _id: PropTypes.number.isRequired,
+    slug: PropTypes.string.isRequired,
+    img: PropTypes.string.isRequired,
+    category: PropTypes.string.isRequired,
+    createdAt: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    summary: PropTypes.string.isRequired,
+    views: PropTypes.number.isRequired,
+    isLiked: PropTypes.bool.isRequired,
+    likes: PropTypes.number.isRequired,
+    comments: PropTypes.number.isRequired,
+  }.isRequired,
+};
+
+export default EditPostPage;
