@@ -61,7 +61,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="flex fixed top-0 items-center h-14 bg-white w-full">
+    <nav className="flex fixed z-10 top-0 items-center h-14 bg-white w-full">
       {openModal === true && <LoginModal onClose={() => setOpenModal(false)} />}
       {showSettings === true && (
         <SettingsModal onClose={() => setShowSettings(false)} />

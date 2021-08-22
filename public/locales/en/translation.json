@@ -37,7 +37,12 @@
     "summary": "Summary",
     "share": "Share"
   },
+  "Search": {
+    "search": "Search..",
+    "notFound": "No posts were found matching your search criteria."
+  },
   "categories": {
+    "All": "All",
     "Science": "Science",
     "Game": "Game",
     "Technologie": "Technologie",

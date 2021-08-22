@@ -37,7 +37,12 @@
     "summary": "Özet",
     "share": "Paylaş"
   },
+  "Search": {
+    "search": "Arama..",
+    "notFound": "Aradığınız kriterlere uygun gönderi bulunamadı."
+  },
   "categories": {
+    "All": "Hepsi",
     "Science": "Bilim",
     "Game": "Oyun",
     "Technologie": "Teknoloji",

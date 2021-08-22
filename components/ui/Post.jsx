@@ -13,7 +13,7 @@ const Post = ({ data }) => {
   const { t } = useTranslation();
   const userData = useAuthContext().data;
   return (
-    <div className="flex flex-col xs:w-60 w-54 rounded border-solid border border-borderColor bg-white mr-5 mb-5">
+    <div className="flex flex-col xs:w-60 w-54 rounded border-solid border border-borderColor bg-white xs:mr-5 mx-2 mb-5">
       <Link href={`/post/${data.slug}`}>
         <a>
           <img src={data.img} alt="post" className="w-full" />

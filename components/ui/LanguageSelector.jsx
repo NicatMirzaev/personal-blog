@@ -21,6 +21,7 @@ const LanguageSelector = ({ extraClassName }) => {
       <Dropdown
         options={Object.values(Languages)}
         onChange={onSelect}
+        arrowClassName="top-5"
         value={Languages[i18n.language]}
       />
     </div>
