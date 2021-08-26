@@ -1,6 +1,7 @@
 import React from 'react';
-import moment from 'moment';
 import PropTypes from 'prop-types';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import Link from 'next/link';
 import { useAuth, useAuthContext } from '../AuthProvider';
 import LoginModal from './LoginModal';
@@ -9,24 +10,28 @@ import TrashIcon from '../icons/Trash';
 import HeartIcon from '../icons/Heart';
 import { makeRequest, kFormatter } from '../../lib/helpers';
 
-const Comment = ({ data, onDeleteComment }) => {
+dayjs.extend(relativeTime);
+// eslint-disable-next-line react/prop-types
+const Comment = ({ userDetails, data, onDeleteComment }) => {
   const userData = useAuthContext().data;
   const dispatch = useAuth();
-  const [senderDetails, setSenderDetails] = React.useState({});
+  const [senderDetails, setSenderDetails] = React.useState(userDetails);
   const [commentData, setCommentData] = React.useState(data);
   const [loginModal, setLoginModal] = React.useState(false);
 
   React.useEffect(() => {
     let isMounted = true;
-    makeRequest(`/users/get-user?id=${data.senderId}`, 'GET').then((res) => {
-      if (res) {
-        if (isMounted) setSenderDetails(res);
-      }
-    });
+    if (senderDetails === undefined) {
+      makeRequest(`/users/get-user?id=${data.senderId}`, 'GET').then((res) => {
+        if (res) {
+          if (isMounted) setSenderDetails(res);
+        }
+      });
+    }
     return () => {
       isMounted = false;
     };
-  }, [data]);
+  }, [data, senderDetails]);
 
   const handleLike = () => {
     if (!userData) {
@@ -48,9 +53,10 @@ const Comment = ({ data, onDeleteComment }) => {
     });
   };
 
-  if (Object.keys(senderDetails).length === 0) return null;
+  if (senderDetails === undefined) return null;
+
   return (
-    <div className="flex w-full p-2 rounded-lg mt-5 border">
+    <div className="flex w-full p-2 rounded-lg mt-5 border bg-white">
       {loginModal === true && (
         <LoginModal onClose={() => setLoginModal(false)} />
       )}
@@ -71,7 +77,7 @@ const Comment = ({ data, onDeleteComment }) => {
               </a>
             </Link>
             <span className="text-sm text-gray-500">
-              {moment(commentData.createdAt).fromNow()}
+              {dayjs(commentData.createdAt).fromNow()}
             </span>
           </div>
           {userData?.moderator === true || userData?._id === data.senderId ? (

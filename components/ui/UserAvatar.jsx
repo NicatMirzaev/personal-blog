@@ -13,13 +13,13 @@ const avatarSize = {
 
 const UserAvatar = (props) => {
   const [error, setError] = useState(false);
-  const { src, size, extraClassName, hover, username } = props;
+  const { src, size, extraClassName, customSize, hover, username } = props;
   return (
     <div
       className={`relative cursor-pointer inline-block ${extraClassName}`}
       style={{
-        width: avatarSize[size],
-        height: avatarSize[size],
+        width: !customSize.length ? avatarSize[size] : customSize,
+        height: !customSize.length ? avatarSize[size] : customSize,
       }}
       {...props}
     >
@@ -45,6 +45,7 @@ const UserAvatar = (props) => {
 UserAvatar.defaultProps = {
   src: '',
   size: 'default',
+  customSize: '',
   extraClassName: '',
   hover: true,
   username: '',
@@ -52,6 +53,7 @@ UserAvatar.defaultProps = {
 
 UserAvatar.propTypes = {
   src: PropTypes.string,
+  customSize: PropTypes.string,
   size: PropTypes.oneOf(Object.keys(avatarSize)),
   extraClassName: PropTypes.string,
   hover: PropTypes.bool,

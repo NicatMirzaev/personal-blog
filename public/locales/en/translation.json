@@ -49,6 +49,14 @@
     "Mobile": "Mobile",
     "Software": "Software"
   },
+  "profilePage": {
+    "date": "Register Date",
+    "point": "Point",
+    "edit": "Edit Profile",
+    "liked": "Liked Posts",
+    "comments": "Latest Comments",
+    "nothing": "There is nothing to show."
+  },
   "postDetails": {
     "otherPosts": "Other posts in this category",
     "comments": "Comments",

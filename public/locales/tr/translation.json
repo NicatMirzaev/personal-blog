@@ -49,6 +49,14 @@
     "Mobile": "Mobil",
     "Software": "Yazılım"
   },
+  "profilePage": {
+    "date": "Kayıt Tarihi",
+    "point": "Puan",
+    "edit": "Profil Düzenle",
+    "liked": "Beğenilen Gönderiler",
+    "comments": "Son Yorumlar",
+    "nothing": "Üzgünüz, hiç bir şey bulamadık."
+  },
   "postDetails": {
     "otherPosts": "Bu kategoriye ait diğer gönderiler",
     "comments": "Yorumlar",

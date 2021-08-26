@@ -64,7 +64,10 @@ const Navbar = () => {
     <nav className="flex fixed z-10 top-0 items-center h-14 bg-white w-full">
       {openModal === true && <LoginModal onClose={() => setOpenModal(false)} />}
       {showSettings === true && (
-        <SettingsModal onClose={() => setShowSettings(false)} />
+        <SettingsModal
+          userData={user.data}
+          onClose={() => setShowSettings(false)}
+        />
       )}
       <div className="flex w-full h-full items-center justify-between md:px-20 px-6">
         <Link href="/">

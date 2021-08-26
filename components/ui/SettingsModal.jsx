@@ -3,8 +3,6 @@ import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { useAuthContext, useAuth } from '../AuthProvider';
-import { getValue } from '../../lib/store';
-import { API_URL } from '../../lib/config';
 import { makeRequest } from '../../lib/helpers';
 import Input from './Input';
 import Button from './Button';
@@ -21,15 +19,15 @@ const customStyles = {
   },
 };
 
-const SettingsModal = ({ onClose }) => {
+const SettingsModal = ({ userData, onClose }) => {
   const { t } = useTranslation();
   const user = useAuthContext();
   const dispatch = useAuth();
   const [data, setData] = React.useState({ error: '', loading: false });
   const [values, setValues] = React.useState({
-    bio: user.data.bio,
-    displayName: user.data.displayName,
-    profileImg: user.data.profileImg,
+    bio: userData.bio,
+    displayName: userData.displayName,
+    profileImg: userData.profileImg,
   });
 
   const handleChange = (e) => {
@@ -38,9 +36,9 @@ const SettingsModal = ({ onClose }) => {
 
   const checkSubmit = () => {
     if (
-      values.bio === user.data.bio &&
-      values.displayName === user.data.displayName &&
-      values.profileImg === user.data.profileImg &&
+      values.bio === userData.bio &&
+      values.displayName === userData.displayName &&
+      values.profileImg === userData.profileImg &&
       data.loading === false
     ) {
       return true;
@@ -49,20 +47,22 @@ const SettingsModal = ({ onClose }) => {
   };
 
   const handleSubmit = () => {
-    setData({ error: '', loading: true });
-    const token = getValue('token');
-    if (token) {
+    if (user.data?.moderator === true || user.data?._id === userData._id) {
+      setData({ error: '', loading: true });
       const data = {
+        userId: userData._id,
         bio: values.bio,
         displayName: values.displayName,
         profileImg: values.profileImg,
       };
       makeRequest('/users/update', 'POST', JSON.stringify(data)).then((res) => {
         if (res.errorCode === undefined) {
-          dispatch({
-            type: 'SET_USER',
-            payload: { loading: false, data: res },
-          });
+          if (res._id === user._id) {
+            dispatch({
+              type: 'SET_USER',
+              payload: { loading: false, data: res },
+            });
+          }
           setData({ error: '', loading: false, success: true });
         } else {
           setData({ error: t(`errorCodes.${res.errorCode}`), loading: false });

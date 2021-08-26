@@ -2,7 +2,7 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import ReactMarkdown from 'react-markdown';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
@@ -103,7 +103,7 @@ const PostDetails = ({
                 />
               )}
               <span className="text-xs font-semibold text-blue-500">
-                {moment(post.createdAt).format('DD/MM/YYYY')}
+                {dayjs(post.createdAt).format('DD/MM/YYYY')}
               </span>
             </div>
             <p className="mb-5 text-center text-2xl font-semibold">

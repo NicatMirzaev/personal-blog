@@ -4,13 +4,11 @@ import { makeRequest } from '../lib/helpers';
 import DiscoverPage from '../components/pages/Discover';
 import Layout from '../components/Layout';
 
-const Discover = ({ posts }) => {
-  return (
-    <Layout title="Discover">
-      <DiscoverPage posts={posts} />
-    </Layout>
-  );
-};
+const Discover = ({ posts }) => (
+  <Layout title="Discover">
+    <DiscoverPage posts={posts} />
+  </Layout>
+);
 
 Discover.propTypes = {
   posts: PropTypes.arrayOf(

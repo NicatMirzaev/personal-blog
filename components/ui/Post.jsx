@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
@@ -13,7 +13,7 @@ const Post = ({ data }) => {
   const { t } = useTranslation();
   const userData = useAuthContext().data;
   return (
-    <div className="flex flex-col xs:w-60 w-54 rounded border-solid border border-borderColor bg-white xs:mr-5 mx-2 mb-5">
+    <div className="flex flex-col xs:w-60 w-54 rounded border-solid border border-borderColor bg-white xs:mr-5 xs:mx-0 mx-2 mb-5">
       <Link href={`/post/${data.slug}`}>
         <a>
           <img src={data.img} alt="post" className="w-full" />
@@ -23,7 +23,7 @@ const Post = ({ data }) => {
                 {t(`categories.${data.category}`)}
               </span>
               <span className="text-xs font-semibold text-gray-500">
-                {moment(data.createdAt).format('DD/MM/YYYY')}
+                {dayjs(data.createdAt).format('DD/MM/YYYY')}
               </span>
             </div>
             <p className="mb-2 text-base font-bold">{data.title}</p>
