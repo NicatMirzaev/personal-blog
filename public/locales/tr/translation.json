@@ -57,6 +57,15 @@
     "comments": "Son Yorumlar",
     "nothing": "Üzgünüz, hiç bir şey bulamadık."
   },
+  "contact": {
+    "header": "İletişim",
+    "name": "Adınız",
+    "email": "Email adresiniz",
+    "subject": "Konu",
+    "message": "Mesajınız",
+    "success": "Mesajınız başarıyla gönderildi, en kısa süre de dönüş yapacağım.",
+    "send": "Gönder"
+  },
   "postDetails": {
     "otherPosts": "Bu kategoriye ait diğer gönderiler",
     "comments": "Yorumlar",
@@ -75,6 +84,9 @@
     "permission": "Erişim için yetkiniz yok.",
     "title-length": "Başlık 5 ile 100 karakter arasında olmalıdır.",
     "slug-length": "Slug 3 ile 40 karakter arasında olmalıdır.",
-    "empty": "Alanlar boş bırakılamaz."
+    "empty": "Alanlar boş bırakılamaz.",
+    "post-not-found": "Üzgünüz, gönderi bulunamadı.",
+    "comment-not-found": "Üzgünüz, yorum bulunamadı.",
+    "invalid-email": "Geçersiz email adresi."
   }
 }
