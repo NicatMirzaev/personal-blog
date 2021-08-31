@@ -7,6 +7,7 @@
   "feed": {
     "popularPosts": "Popular posts",
     "latestPosts": "Latest posts",
+    "latestComments": "Latest comments",
     "discover": "Discover All The Posts"
   },
   "signIn": {

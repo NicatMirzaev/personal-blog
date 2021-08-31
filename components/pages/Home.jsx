@@ -2,13 +2,32 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
+import { makeRequest } from '../../lib/helpers';
 import Layout from '../Layout';
+import Comment from '../ui/Comment';
 import Footer from '../ui/Footer';
 import Posts from '../ui/Posts';
 import Button from '../ui/Button';
 
-const Home = ({ popularPosts, latestPosts }) => {
+const Home = ({ popularPosts, latestPosts, latestComments }) => {
   const { t } = useTranslation();
+  const [commentsData, setCommentsData] = React.useState(latestComments);
+
+  const onDeleteComment = (commentId) => {
+    makeRequest(
+      '/posts/delete-comment',
+      'POST',
+      JSON.stringify({ commentId }),
+    ).then((res) => {
+      if (res.errorCode === undefined && res.deleted === true) {
+        const commentsArray = commentsData.filter(
+          (comment) => comment._id !== commentId,
+        );
+        setCommentsData(commentsArray);
+      }
+    });
+  };
 
   return (
     <Layout title="Home">
@@ -26,6 +45,27 @@ const Home = ({ popularPosts, latestPosts }) => {
             {t('feed.discover')}
           </Button>
         </div>
+        {commentsData.length > 0 && (
+          <p className="mb-5 text-sm font-medium ">
+            {t('feed.latestComments')}
+          </p>
+        )}
+        {commentsData.map((comment) => (
+          <div className="flex flex-col items-center max-w-screen-md w-full mb-5">
+            {comment.postSlug && (
+              <Link href={`/post/${comment.postSlug}`}>
+                <a className="w-max text-xs text-blue-500 mt-5 font-semibold">
+                  » {comment.postTitle}
+                </a>
+              </Link>
+            )}
+            <Comment
+              key={comment._id}
+              data={comment}
+              onDeleteComment={(commentId) => onDeleteComment(commentId)}
+            />
+          </div>
+        ))}
         <Footer />
       </div>
     </Layout>
@@ -60,6 +100,15 @@ Home.propTypes = {
       views: PropTypes.number.isRequired,
       likes: PropTypes.number.isRequired,
       comments: PropTypes.number.isRequired,
+    }),
+  ).isRequired,
+  latestComments: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.number.isRequired,
+      senderId: PropTypes.string.isRequired,
+      postId: PropTypes.string.isRequired,
+      message: PropTypes.string.isRequired,
+      likes: PropTypes.number.isRequired,
     }),
   ).isRequired,
 };

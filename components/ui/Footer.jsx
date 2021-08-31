@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 import FacebookIcon from '../icons/Facebook';
 import GithubIcon from '../icons/Github';
 import MailIcon from '../icons/Mail';
@@ -11,21 +10,29 @@ const Footer = () => (
       Full Stack Developer.
     </p>
     <div className="flex items-center">
-      <Link href="/">
-        <a className="mr-2">
-          <FacebookIcon />
-        </a>
-      </Link>
-      <Link href="/">
-        <a className="mr-2">
-          <GithubIcon />
-        </a>
-      </Link>
-      <Link href="/">
-        <a>
-          <MailIcon />
-        </a>
-      </Link>
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://www.facebook.com/nicat.mirzayev.5030/"
+        className="mr-2"
+      >
+        <FacebookIcon />
+      </a>
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://github.com/NicatMirzaev"
+        className="mr-2"
+      >
+        <GithubIcon />
+      </a>
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="mailto:nicatmirzoev111@gmail.com"
+      >
+        <MailIcon />
+      </a>
     </div>
     <div className="w-2 h-2" />
   </div>
