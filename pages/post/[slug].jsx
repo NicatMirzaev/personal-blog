@@ -31,7 +31,7 @@ const Post = ({ data, otherPosts, comments }) => {
     if (!userData) return;
     const reqData = {
       senderId: userData._id,
-      postId: data._id,
+      postId: postData._id,
       message,
     };
     makeRequest('/posts/add-comment', 'POST', JSON.stringify(reqData)).then(
@@ -75,6 +75,23 @@ const Post = ({ data, otherPosts, comments }) => {
       }
     });
   };
+  const handleVote = (option) => {
+    if (!userData) return;
+
+    makeRequest(
+      '/posts/vote',
+      'POST',
+      JSON.stringify({ postId: postData._id, option }),
+    ).then((res) => {
+      if (res.errorCode === undefined) {
+        dispatch({
+          type: 'SET_USER',
+          payload: { loading: false, data: res.user },
+        });
+        setPostData(res.post);
+      }
+    });
+  };
   return (
     <PostDetails
       post={postData}
@@ -83,6 +100,7 @@ const Post = ({ data, otherPosts, comments }) => {
       onComment={(message) => onComment(message)}
       onDeleteComment={(commentId) => onDeleteComment(commentId)}
       onDeletePost={onDeletePost}
+      handleVote={handleVote}
       handleLike={handleLike}
     />
   );
