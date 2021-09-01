@@ -31,6 +31,12 @@
   },
   "createPost": {
     "header": "Create new post",
+    "editPost": "Edit Post",
+    "poll": "Poll",
+    "pollQuestion": "Poll Question",
+    "options": "Options:",
+    "optionName": "Option name",
+    "addOption": "Add",
     "title": "Title",
     "slug": "Slug",
     "img": "Image URL",

@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import MarkdownEditor from '../ui/MarkdownEditor';
 import Input from '../ui/Input';
 import Button from '../ui/Button';
+import TrashIcon from '../icons/Trash';
 import { useTranslation } from 'react-i18next';
 import { useAuthContext } from '../AuthProvider';
 import {
@@ -32,6 +33,10 @@ const EditPostPage = ({ postData }) => {
     blogImg: postData?.img,
     blogSummary: postData?.summary,
     blogCategory: postData?.category,
+    pollActive: postData?.pollActive,
+    pollQuestion: postData?.pollQuestion,
+    pollOptions: postData?.pollOptions,
+    optionName: '',
   });
 
   const handleChange = (e) => {
@@ -57,6 +62,9 @@ const EditPostPage = ({ postData }) => {
       img: values.blogImg,
       summary: values.blogSummary,
       category: categoryConvertTurkishToEnglish(values.blogCategory),
+      pollActive: values.pollActive,
+      pollQuestion: values.pollQuestion,
+      pollOptions: values.pollOptions,
     };
     setLoading({ loading: true, error: '' });
     makeRequest('/posts/update-post', 'POST', JSON.stringify(reqData)).then(
@@ -73,9 +81,24 @@ const EditPostPage = ({ postData }) => {
     );
   };
 
+  const addOption = () => {
+    if (!values.optionName.length) return;
+    setValues({
+      ...values,
+      pollOptions: [...values.pollOptions, values.optionName],
+      optionName: '',
+    });
+  };
+
+  const deleteOption = (index) => {
+    const options = values.pollOptions;
+    options.splice(index, 1);
+    setValues({ ...values, pollOptions: options });
+  };
+
   return (
     <div className="flex pt-7 flex-col md:w-8/12 w-full md:pt-7 p-2 h-full mx-auto">
-      <p className="mb-5 text-base font-bold">Edit Post</p>
+      <p className="mb-5 text-base font-bold">{t('createPost.editPost')}</p>
       <form>
         <label className="mb-5 text-xs font-medium" htmlFor="blogTitle">
           {t('createPost.title')}
@@ -141,6 +164,64 @@ const EditPostPage = ({ postData }) => {
           placeholder={t('createPost.summary')}
         />
         <MarkdownEditor value={content} setValue={setContent} />
+        <div className="flex w-full my-5 items-center">
+          <span className="text-sm mr-4">{t('createPost.poll')}</span>
+          <input
+            onChange={() =>
+              setValues({ ...values, pollActive: !values.pollActive })
+            }
+            checked={values.pollActive}
+            style={{ width: '20px', height: '16px' }}
+            type="checkbox"
+          />
+        </div>
+        {values.pollActive === true && (
+          <div className="flex flex-col w-full border border-borderColor bg-white p-5">
+            <label className="mb-5 text-xs font-medium" htmlFor="pollQuestion">
+              {t('createPost.pollQuestion')}
+            </label>
+            <Input
+              id="pollQuestion"
+              name="pollQuestion"
+              type="text"
+              value={values.pollQuestion}
+              onChange={handleChange}
+              placeholder={t('createPost.pollQuestion')}
+            />
+            <div className="flex flex-col mt-5 justify-center">
+              <span className="text-sm mb-2">{t('createPost.options')}</span>
+              {values.pollOptions.map((option, index) => {
+                return (
+                  <div key={index} className="flex mb-2 items-center">
+                    <span className="text-sm mr-4">{option}</span>
+                    <TrashIcon
+                      onClick={() => deleteOption(index)}
+                      className="cursor-pointer"
+                    />
+                  </div>
+                );
+              })}
+              <div className="flex mt-5 items-center">
+                <Input
+                  id="optionName"
+                  name="optionName"
+                  type="text"
+                  value={values.optionName}
+                  className="mr-5"
+                  onChange={handleChange}
+                  placeholder={t('createPost.optionName')}
+                />
+                <Button
+                  onClick={addOption}
+                  size="small"
+                  disabled={values.optionName.length < 1}
+                >
+                  {t('createPost.addOption')}
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
         {loading.error.length > 0 && (
           <p className="my-2 text-xs font-bold text-red-500">{loading.error}</p>
         )}

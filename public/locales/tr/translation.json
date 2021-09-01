@@ -31,7 +31,13 @@
   },
   "createPost": {
     "header": "Yeni gönderi oluştur",
+    "editPost": "Post düzenle",
     "title": "Başlık",
+    "poll": "Oylama",
+    "pollQuestion": "Oylama Sorusu",
+    "options": "Şıklar:",
+    "optionName": "Şık adı",
+    "addOption": "Ekle",
     "slug": "Slug",
     "img": "Resim URL",
     "category": "Kategori",

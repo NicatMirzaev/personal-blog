@@ -7,6 +7,7 @@ import Input from '../ui/Input';
 import Button from '../ui/Button';
 import MarkdownEditor from '../ui/MarkdownEditor';
 import { getValue } from '../../lib/store';
+import TrashIcon from '../icons/Trash';
 import {
   makeRequest,
   categoryConvertTurkishToEnglish,
@@ -16,6 +17,12 @@ const CreatePostPage = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const [content, setContent] = React.useState('');
+  const [poll, setPoll] = React.useState({
+    active: false,
+    question: '',
+    options: [],
+  });
+  const [option, setOption] = React.useState('');
   const categories = [
     t('categories.Science'),
     t('categories.Game'),
@@ -59,6 +66,9 @@ const CreatePostPage = () => {
         content,
         slug: values.blogSlug,
         category: categoryConvertTurkishToEnglish(values.blogCategory),
+        pollActive: poll.active,
+        pollQuestion: poll.question,
+        pollOptions: poll.options,
       };
       makeRequest('/posts/add-post', 'POST', JSON.stringify(data)).then(
         (res) => {
@@ -76,6 +86,21 @@ const CreatePostPage = () => {
     }
   };
 
+  const handlePollQuestion = ({ target }) => {
+    setPoll({ ...poll, question: target.value });
+  };
+
+  const addOption = () => {
+    if (!option.length) return;
+    setPoll({ ...poll, options: [...poll.options, option] });
+    setOption('');
+  };
+
+  const deleteOption = (index) => {
+    const options = poll.options;
+    options.splice(index, 1);
+    setPoll({ ...poll, options });
+  };
   return (
     <div className="flex pt-7 flex-col md:w-8/12 w-full md:pt-7 p-2 h-full mx-auto">
       <p className="mb-5 text-base font-bold">{t('createPost.header')}</p>
@@ -144,6 +169,60 @@ const CreatePostPage = () => {
           placeholder={t('createPost.summary')}
         />
         <MarkdownEditor value={content} setValue={setContent} />
+        <div className="flex w-full my-5 items-center">
+          <span className="text-sm mr-4">{t('createPost.poll')}</span>
+          <input
+            onChange={() => setPoll({ ...poll, active: !poll.active })}
+            checked={poll.active}
+            style={{ width: '20px', height: '16px' }}
+            type="checkbox"
+          />
+        </div>
+        {poll.active === true && (
+          <div className="flex flex-col w-full border border-borderColor bg-white p-5">
+            <label className="mb-5 text-xs font-medium" htmlFor="pollQuestion">
+              {t('createPost.pollQuestion')}
+            </label>
+            <Input
+              id="pollQuestion"
+              name="pollQuestion"
+              type="text"
+              value={poll.question}
+              onChange={handlePollQuestion}
+              placeholder={t('createPost.pollQuestion')}
+            />
+            <div className="flex flex-col mt-5 justify-center">
+              <span className="text-sm mb-2">{t('createPost.options')}</span>
+              {poll.options.map((option, index) => {
+                return (
+                  <div key={index} className="flex mb-2 items-center">
+                    <span className="text-sm mr-4">{option}</span>
+                    <TrashIcon
+                      onClick={() => deleteOption(index)}
+                      className="cursor-pointer"
+                    />
+                  </div>
+                );
+              })}
+              <div className="flex mt-5 items-center">
+                <Input
+                  type="text"
+                  value={option}
+                  className="mr-5"
+                  onChange={(e) => setOption(e.target.value)}
+                  placeholder={t('createPost.optionName')}
+                />
+                <Button
+                  onClick={addOption}
+                  size="small"
+                  disabled={option.length < 1}
+                >
+                  {t('createPost.addOption')}
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
         {loading.error.length > 0 && (
           <p className="my-2 text-xs font-bold text-red-500">{loading.error}</p>
         )}

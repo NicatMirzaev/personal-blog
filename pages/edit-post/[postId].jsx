@@ -43,6 +43,7 @@ EditPost.propTypes = {
 export async function getServerSideProps({ query }) {
   const { postId } = query;
   const data = await makeRequest(`/posts/get-post-by-id?id=${postId}`, 'GET');
+  data.pollOptions = Object.keys(data.pollOptions);
   return { props: { data } };
 }
 
