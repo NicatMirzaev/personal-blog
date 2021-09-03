@@ -8,6 +8,7 @@ import LoginModal from './LoginModal';
 import UserAvatar from './UserAvatar';
 import TrashIcon from '../icons/Trash';
 import HeartIcon from '../icons/Heart';
+import CheckIcon from '../icons/Check';
 import { makeRequest, kFormatter } from '../../lib/helpers';
 
 dayjs.extend(relativeTime);
@@ -38,47 +39,39 @@ const Comment = ({ userDetails, data, onDeleteComment }) => {
       setLoginModal(true);
       return;
     }
-    makeRequest(
-      '/posts/like-comment',
-      'POST',
-      JSON.stringify({ commentId: data._id }),
-    ).then((res) => {
-      if (res.errorCode === undefined) {
-        setCommentData(res.comment);
-        dispatch({
-          type: 'SET_USER',
-          payload: { loading: false, data: res.user },
-        });
-      }
-    });
+    makeRequest('/posts/like-comment', 'POST', JSON.stringify({ commentId: data._id })).then(
+      (res) => {
+        if (res.errorCode === undefined) {
+          setCommentData(res.comment);
+          dispatch({
+            type: 'SET_USER',
+            payload: { loading: false, data: res.user },
+          });
+        }
+      },
+    );
   };
 
   if (senderDetails === undefined) return null;
 
   return (
     <div className="flex w-full p-2 rounded-lg mt-5 border bg-white">
-      {loginModal === true && (
-        <LoginModal onClose={() => setLoginModal(false)} />
-      )}
+      {loginModal === true && <LoginModal onClose={() => setLoginModal(false)} />}
       <Link href={`/user/${commentData.senderId}`}>
         <a>
-          <UserAvatar
-            src={senderDetails?.profileImg}
-            username={senderDetails?.displayName}
-          />
+          <UserAvatar src={senderDetails?.profileImg} username={senderDetails?.displayName} />
         </a>
       </Link>
       <div className="flex flex-col ml-2 justify-center w-full">
         <div className="flex items-center justify-between w-full mb-2">
           <div className="flex items-center">
             <Link href={`/user/${commentData.senderId}`}>
-              <a className="mr-2 text-md font-bold">
+              <a className="flex items-center mr-2 text-md font-bold">
                 {senderDetails?.displayName}
+                {senderDetails?.point >= 100 && <CheckIcon className="ml-2" />}
               </a>
             </Link>
-            <span className="text-sm text-gray-500">
-              {dayjs(commentData.createdAt).fromNow()}
-            </span>
+            <span className="text-sm text-gray-500">{dayjs(commentData.createdAt).fromNow()}</span>
           </div>
           {userData?.moderator === true || userData?._id === data.senderId ? (
             <TrashIcon

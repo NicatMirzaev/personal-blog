@@ -95,6 +95,7 @@
     "empty": "Fields can not be empty.",
     "post-not-found": "Sorry, post not found.",
     "comment-not-found": "Sorry, comment not found.",
-    "invalid-email": "Invalid email address."
+    "invalid-email": "Invalid email address.",
+    "comment-cooldown": "Wait 1 minute to post a comment again."
   }
 }

@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import Layout from '../Layout';
 import Button from '../ui/Button';
 import LoginModal from '../ui/LoginModal';
+import ErrorModal from '../ui/ErrorModal';
 import Input from '../ui/Input';
 import ViewsIcon from '../icons/Views';
 import HeartIcon from '../icons/Heart';
@@ -61,6 +62,8 @@ const PostDetails = ({
   onDeletePost,
   handleVote,
   handleLike,
+  error,
+  setError,
 }) => {
   const { data } = useAuthContext();
   const { t } = useTranslation();
@@ -89,6 +92,9 @@ const PostDetails = ({
   return (
     <Layout title={post.title}>
       {loginModal === true && <LoginModal onClose={() => setLoginModal(false)} />}
+      {error.length > 0 && (
+        <ErrorModal error={t(`errorCodes.${error}`)} onClose={() => setError('')} />
+      )}
       <div className="flex w-full pt-2 justify-center">
         <div className="flex flex-col md:w-3/5 w-full m-2 h-full border border-borderColor rounded bg-white">
           {post.pollActive === true && (
@@ -201,6 +207,7 @@ const PostDetails = ({
         </div>
         <div className="md:flex hidden flex-col ml-24 h-full">
           <p className="mb-5 text-sm font-medium ">{t('postDetails.otherPosts')}</p>
+          {!otherPosts.length && <p className="text-xs font-medium ">{t('profilePage.nothing')}</p>}
           {otherPosts.map((postData) => (
             <Post key={postData._id} data={postData} />
           ))}
@@ -216,6 +223,8 @@ PostDetails.propTypes = {
   handleLike: PropTypes.func.isRequired,
   onComment: PropTypes.func.isRequired,
   handleVote: PropTypes.func.isRequired,
+  setError: PropTypes.func.isRequired,
+  error: PropTypes.string.isRequired,
   post: {
     _id: PropTypes.number.isRequired,
     slug: PropTypes.string.isRequired,

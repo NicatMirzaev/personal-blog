@@ -95,6 +95,7 @@
     "empty": "Alanlar boş bırakılamaz.",
     "post-not-found": "Üzgünüz, gönderi bulunamadı.",
     "comment-not-found": "Üzgünüz, yorum bulunamadı.",
-    "invalid-email": "Geçersiz email adresi."
+    "invalid-email": "Geçersiz email adresi.",
+    "comment-cooldown": "Tekrar yorum göndermek için 1 dakika bekleyin."
   }
 }

@@ -9,6 +9,7 @@ import Button from '../ui/Button';
 import Post from '../ui/Post';
 import Comment from '../ui/Comment';
 import SettingsModal from '../ui/SettingsModal';
+import CheckIcon from '../icons/Check';
 import { makeRequest } from '../../lib/helpers';
 import { useAuthContext } from '../AuthProvider';
 
@@ -21,15 +22,9 @@ const UserProfilePage = ({ data, likedPosts, comments }) => {
 
   const onDeleteComment = (commentId) => {
     if (!user) return;
-    makeRequest(
-      '/posts/delete-comment',
-      'POST',
-      JSON.stringify({ commentId }),
-    ).then((res) => {
+    makeRequest('/posts/delete-comment', 'POST', JSON.stringify({ commentId })).then((res) => {
       if (res.errorCode === undefined && res.deleted === true) {
-        const commentsArray = commentsData.filter(
-          (comment) => comment._id !== commentId,
-        );
+        const commentsArray = commentsData.filter((comment) => comment._id !== commentId);
         setCommentsData(commentsArray);
       }
     });
@@ -42,12 +37,11 @@ const UserProfilePage = ({ data, likedPosts, comments }) => {
       )}
       <div className="flex flex-col lg:mr-20">
         <div className="flex flex-col mb-2 items-center">
-          <UserAvatar
-            src={data.profileImg}
-            username={data.displayName}
-            customSize="124px"
-          />
-          <span className="text-lg mt-2 font-bold">{data.displayName}</span>
+          <UserAvatar src={data.profileImg} username={data.displayName} customSize="124px" />
+          <div className="flex mt-2 items-center">
+            <span className="text-lg font-bold">{data.displayName}</span>
+            {data.point >= 100 && <CheckIcon className="ml-2" />}
+          </div>
         </div>
         <div className="lg:w-40 w-full text-center mb-5 break-words">
           <span className="text-sm mb-5 text-gray-500">{data.bio}</span>
@@ -56,28 +50,21 @@ const UserProfilePage = ({ data, likedPosts, comments }) => {
           {t('profilePage.date')}: {dayjs(data.createdAt).format('DD/MM/YYYY')}
         </span>
         <span className="text-xs lg:text-left text-center mb-5 font-semibold">
-          {t('profilePage.point')}: 200
+          {t('profilePage.point')}: {data.point}
         </span>
         {user?.moderator === true && (
-          <Button
-            onClick={() => setShowSettings(true)}
-            extraClassName="lg:mb-0 mb-5"
-          >
+          <Button onClick={() => setShowSettings(true)} extraClassName="lg:mb-0 mb-5">
             {t('profilePage.edit')}
           </Button>
         )}
       </div>
       <div className="flex flex-col w-full">
         <div className="flex w-full mb-5">
-          <span className="text-sm font-semibold text-accent">
-            {t('profilePage.liked')}
-          </span>
+          <span className="text-sm font-semibold text-accent">{t('profilePage.liked')}</span>
         </div>
         <div className="flex flex-wrap mb-2 w-full">
           {likedPosts.length < 1 && (
-            <p className="text-sm mb-2 font-semibold">
-              {t('profilePage.nothing')}
-            </p>
+            <p className="text-sm mb-2 font-semibold">{t('profilePage.nothing')}</p>
           )}
           {likedPosts.slice(page * 3, (page + 1) * 3).map((post) => (
             <Post key={post._id} data={post} />
@@ -109,9 +96,7 @@ const UserProfilePage = ({ data, likedPosts, comments }) => {
           </div>
         )}
         <div className="flex w-full">
-          <span className="text-sm font-semibold text-accent">
-            {t('profilePage.comments')}
-          </span>
+          <span className="text-sm font-semibold text-accent">{t('profilePage.comments')}</span>
         </div>
         <div className="flex flex-col w-full h-96 hide-scrollbar overflow-y-auto">
           {commentsData.length < 1 && (

@@ -12,11 +12,13 @@ const EditPost = ({ data }) => {
 
   if (
     (!user.data && user.loading === false) ||
+    data.errorCode !== undefined ||
     (user.loading === false && user.data?.moderator !== true)
   ) {
     router.push('/');
     return null;
   }
+
   return (
     <Layout title="Edit Post">
       <EditPostPage postData={data} />
@@ -43,7 +45,7 @@ EditPost.propTypes = {
 export async function getServerSideProps({ query }) {
   const { postId } = query;
   const data = await makeRequest(`/posts/get-post-by-id?id=${postId}`, 'GET');
-  data.pollOptions = Object.keys(data.pollOptions);
+  if (data.errorCode === undefined) data.pollOptions = Object.keys(data.pollOptions);
   return { props: { data } };
 }
 
