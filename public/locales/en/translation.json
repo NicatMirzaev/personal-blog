@@ -13,7 +13,9 @@
   "signIn": {
     "withGoogle": "Sign in with Google",
     "withTwitter": "Sign in with Twitter",
-    "withGithub": "Sign in with GitHub"
+    "withGithub": "Sign in with GitHub",
+    "beta": "BETA SIGN IN",
+    "betaPassword": "Beta Password"
   },
   "profile": {
     "myProfile": "Profile",

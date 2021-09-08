@@ -13,7 +13,9 @@
   "signIn": {
     "withGoogle": "Google ile giriş yap",
     "withTwitter": "Twitter ile giriş yap",
-    "withGithub": "GitHub ile giriş yap"
+    "withGithub": "GitHub ile giriş yap",
+    "beta": "BETA GİRİŞ YAP",
+    "betaPassword": "Beta Şifresi"
   },
   "profile": {
     "myProfile": "Profil",

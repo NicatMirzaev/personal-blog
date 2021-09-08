@@ -72,11 +72,12 @@ const LoginModal = ({ onClose }) => {
             {t('signIn.withGithub')}
           </Button>
           <div className="flex flex-col w-full justify-center items-center">
-            <span className="text-md text-gray-500 mb-5 font-bold">BETA ÖZEL</span>
+            <span className="text-md text-gray-500 mb-5 font-bold">{t('signIn.beta')}</span>
             <Input
+              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Beta Şifresi"
+              placeholder={t('signIn.betaPassword')}
             />
             <Button
               onClick={() => {
@@ -85,7 +86,7 @@ const LoginModal = ({ onClose }) => {
               }}
               extraClassName="mt-4 text-base w-full"
             >
-              Giriş Yap
+              {t('navbar.signIn')}
             </Button>
           </div>
         </div>
