@@ -27,9 +27,7 @@ const Post = ({ data }) => {
               </span>
             </div>
             <p className="mb-2 text-base font-bold">{data.title}</p>
-            <p className="text-sm font-medium text-gray-500 mb-5">
-              {data.summary}
-            </p>
+            <p className="text-sm font-medium text-gray-500 mb-5">{data.summary}</p>
             <div className="flex items-center w-full">
               <div className="flex items-center mr-6">
                 <ViewsIcon />
@@ -38,7 +36,7 @@ const Post = ({ data }) => {
                 </span>
               </div>
               <div className="flex items-center mr-6">
-                {userData?.likes.includes(data._id) === true ? (
+                {userData?.likes?.includes(data._id) === true ? (
                   <HeartIcon fill="red" stroke="red" />
                 ) : (
                   <HeartIcon />

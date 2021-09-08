@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
 import Button from './Button';
+import Input from './Input';
 import GoogleIcon from '../icons/Google';
 import TwitterIcon from '../icons/Twitter';
 import GithubIcon from '../icons/Github';
@@ -24,6 +25,8 @@ const customStyles = {
 const LoginModal = ({ onClose }) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const [password, setPassword] = React.useState('');
+
   return (
     <div>
       <Modal
@@ -68,6 +71,23 @@ const LoginModal = ({ onClose }) => {
             <GithubIcon className="mr-2" width={20} height={20} />
             {t('signIn.withGithub')}
           </Button>
+          <div className="flex flex-col w-full justify-center items-center">
+            <span className="text-md text-gray-500 mb-5 font-bold">BETA ÖZEL</span>
+            <Input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Beta Şifresi"
+            />
+            <Button
+              onClick={() => {
+                setValue('redirectTo', router.asPath);
+                window.location.href = `${API_URL}/auth/beta-login?password=${password}`;
+              }}
+              extraClassName="mt-4 text-base w-full"
+            >
+              Giriş Yap
+            </Button>
+          </div>
         </div>
       </Modal>
     </div>
