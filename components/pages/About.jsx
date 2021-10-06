@@ -2,7 +2,6 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import ReactMarkdown from 'react-markdown';
 import { useTranslation } from 'react-i18next';
-import Footer from '../ui/Footer';
 
 const AboutPage = () => {
   const remarkGfm = dynamic(() => import('remark-gfm'), { ssr: false });
@@ -18,7 +17,6 @@ const AboutPage = () => {
       >
         {t('about')}
       </ReactMarkdown>
-      <Footer />
     </div>
   );
 };

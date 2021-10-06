@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
 import Navbar from './ui/Navbar';
+import Footer from './ui/Footer';
 
 const Layout = ({ children, title, navbarMaxWidth }) => (
   <div style={{ paddingTop: '60px' }} className="w-full h-full">
@@ -9,7 +10,7 @@ const Layout = ({ children, title, navbarMaxWidth }) => (
       <title>{title} - Nicat Mirzaev Personal Blog</title>
     </Head>
     <Navbar maxWidth={navbarMaxWidth} />
-    <div className="flex w-full">{children}</div>
+    <div className="flex w-full h-full">{children}</div>
   </div>
 );
 

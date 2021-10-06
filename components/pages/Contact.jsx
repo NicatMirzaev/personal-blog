@@ -2,7 +2,6 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Input from '../ui/Input';
 import Button from '../ui/Button';
-import Footer from '../ui/Footer';
 import { makeRequest } from '../../lib/helpers';
 const ContactPage = () => {
   const { t } = useTranslation();
@@ -102,7 +101,6 @@ const ContactPage = () => {
           {t('contact.send')}
         </Button>
       </form>
-      <Footer />
     </div>
   );
 };

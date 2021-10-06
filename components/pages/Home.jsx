@@ -6,9 +6,9 @@ import Link from 'next/link';
 import { makeRequest } from '../../lib/helpers';
 import Layout from '../Layout';
 import Comment from '../ui/Comment';
-import Footer from '../ui/Footer';
 import Posts from '../ui/Posts';
 import Button from '../ui/Button';
+import Footer from '../ui/Footer';
 
 const Home = ({ popularPosts, latestPosts, latestComments }) => {
   const { t } = useTranslation();
