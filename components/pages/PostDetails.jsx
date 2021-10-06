@@ -90,7 +90,7 @@ const PostDetails = ({
   }
 
   return (
-    <Layout title={post.title}>
+    <Layout title={post.title} navbarMaxWidth="4000px">
       {loginModal === true && <LoginModal onClose={() => setLoginModal(false)} />}
       {error.length > 0 && (
         <ErrorModal error={t(`errorCodes.${error}`)} onClose={() => setError('')} />
@@ -182,6 +182,7 @@ const PostDetails = ({
               components={{
                 a: ({ ...props }) => <a target="_blank" style={{ color: '#0000EE' }} {...props} />,
                 p: ({ ...props }) => <p style={{ marginBottom: '10px' }} {...props} />,
+                img: ({ ...props }) => <img style={{ width: '100%' }} {...props} alt="post" />,
               }}
               remarkPlugins={[remarkGfm]}
             >

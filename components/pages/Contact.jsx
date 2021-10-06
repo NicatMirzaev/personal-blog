@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Input from '../ui/Input';
 import Button from '../ui/Button';
+import Footer from '../ui/Footer';
 import { makeRequest } from '../../lib/helpers';
 const ContactPage = () => {
   const { t } = useTranslation();
@@ -38,7 +39,7 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="flex pt-7 flex-col md:w-8/12 w-full md:pt-7 p-2 h-full mx-auto">
+    <div className="flex pt-7 flex-col md:w-8/12 w-full md:pt-7 p-2 h-full max-w-screen-lg mx-auto">
       <p className="mb-5 text-base font-bold">{t('navbar.contact')}</p>
       <form>
         <label className="mb-5 text-xs font-medium" htmlFor="name">
@@ -95,18 +96,13 @@ const ContactPage = () => {
           <p className="my-2 text-xs font-bold text-red-500">{loading.error}</p>
         )}
         {loading.success === true && (
-          <p className="my-2 text-xs font-bold text-green-500">
-            {t('contact.success')}
-          </p>
+          <p className="my-2 text-xs font-bold text-green-500">{t('contact.success')}</p>
         )}
-        <Button
-          onClick={handleSubmit}
-          loading={loading.loading}
-          extraClassName="mt-3 w-full"
-        >
+        <Button onClick={handleSubmit} loading={loading.loading} extraClassName="mt-3 w-full">
           {t('contact.send')}
         </Button>
       </form>
+      <Footer />
     </div>
   );
 };

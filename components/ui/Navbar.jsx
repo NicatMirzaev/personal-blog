@@ -12,7 +12,8 @@ import UserAvatar from './UserAvatar';
 import { removeValue } from '../../lib/store';
 import { useAuth, useAuthContext } from '../AuthProvider';
 
-const Navbar = () => {
+// eslint-disable-next-line react/prop-types
+const Navbar = ({ maxWidth }) => {
   const { t } = useTranslation();
   const user = useAuthContext();
   const dispatch = useAuth();
@@ -64,12 +65,12 @@ const Navbar = () => {
     <nav className="flex fixed z-10 top-0 items-center h-14 bg-white w-full">
       {openModal === true && <LoginModal onClose={() => setOpenModal(false)} />}
       {showSettings === true && (
-        <SettingsModal
-          userData={user.data}
-          onClose={() => setShowSettings(false)}
-        />
+        <SettingsModal userData={user.data} onClose={() => setShowSettings(false)} />
       )}
-      <div className="flex w-full h-full items-center justify-between md:px-20 px-6">
+      <div
+        style={{ maxWidth }}
+        className="flex w-full h-full items-center justify-between md:px-20 px-6 mx-auto"
+      >
         <Link href="/">
           <a className="w-10 h-10">
             <img className="object-contain" src="/logo.png" alt="logo" />
@@ -148,10 +149,7 @@ const Navbar = () => {
           </Button>
           <LanguageSelector extraClassName="sm:flex hidden" />
           {!user.data ? (
-            <Button
-              onClick={() => setOpenModal(true)}
-              extraClassName="sm:flex hidden ml-5"
-            >
+            <Button onClick={() => setOpenModal(true)} extraClassName="sm:flex hidden ml-5">
               {t('navbar.signIn')}
             </Button>
           ) : (

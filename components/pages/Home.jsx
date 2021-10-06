@@ -15,15 +15,9 @@ const Home = ({ popularPosts, latestPosts, latestComments }) => {
   const [commentsData, setCommentsData] = React.useState(latestComments);
 
   const onDeleteComment = (commentId) => {
-    makeRequest(
-      '/posts/delete-comment',
-      'POST',
-      JSON.stringify({ commentId }),
-    ).then((res) => {
+    makeRequest('/posts/delete-comment', 'POST', JSON.stringify({ commentId })).then((res) => {
       if (res.errorCode === undefined && res.deleted === true) {
-        const commentsArray = commentsData.filter(
-          (comment) => comment._id !== commentId,
-        );
+        const commentsArray = commentsData.filter((comment) => comment._id !== commentId);
         setCommentsData(commentsArray);
       }
     });
@@ -39,16 +33,14 @@ const Home = ({ popularPosts, latestPosts, latestComments }) => {
         <div className="my-10 flex items-center justify-center w-full">
           <Button
             link="/discover"
-            extraClassName="xs:w-1/2 w-full mr-4"
+            extraClassName="xs:w-1/2 w-full mr-4 max-w-screen-lg"
             color="primary"
           >
             {t('feed.discover')}
           </Button>
         </div>
         {commentsData.length > 0 && (
-          <p className="mb-5 text-sm font-medium ">
-            {t('feed.latestComments')}
-          </p>
+          <p className="mb-5 text-sm font-medium ">{t('feed.latestComments')}</p>
         )}
         {commentsData.map((comment) => (
           <div className="flex flex-col items-center max-w-screen-md w-full mb-5">

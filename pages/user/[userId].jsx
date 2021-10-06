@@ -16,7 +16,7 @@ const UserProfile = ({ data, likedPosts, comments }) => {
     );
   }
   return (
-    <Layout title="Profile">
+    <Layout title="Profile" navbarMaxWidth="1280px">
       <UserProfilePage data={data} comments={comments} likedPosts={likedPosts} />
     </Layout>
   );

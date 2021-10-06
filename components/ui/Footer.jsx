@@ -4,11 +4,9 @@ import GithubIcon from '../icons/Github';
 import MailIcon from '../icons/Mail';
 
 const Footer = () => (
-  <div className="flex flex-col w-1/2 items-center border-solid border-t border-borderColor w-11/12 justify-center">
+  <div className="flex flex-col w-1/2 fixed inset-0 items-center border-solid border-t border-borderColor w-11/12 justify-center">
     <p className="mt-5 mb-1 text-base font-bold">Nicat Mirzaev</p>
-    <p className="mb-2 text-sm font-semibold text-gray-500">
-      Full Stack Developer.
-    </p>
+    <p className="mb-2 text-sm font-semibold text-gray-500">Full Stack Developer.</p>
     <div className="flex items-center">
       <a
         target="_blank"
@@ -26,11 +24,7 @@ const Footer = () => (
       >
         <GithubIcon />
       </a>
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="mailto:nicatmirzoev111@gmail.com"
-      >
+      <a target="_blank" rel="noopener noreferrer" href="mailto:nicatmirzoev111@gmail.com">
         <MailIcon />
       </a>
     </div>
