@@ -69,7 +69,7 @@ const Navbar = ({ maxWidth }) => {
       )}
       <div
         style={{ maxWidth }}
-        className="flex w-full h-full items-center justify-between md:px-20 lg:px-0 px-6 mx-auto"
+        className="flex w-full h-full items-center justify-between md:px-20 xl:px-0 px-6 mx-auto"
       >
         <Link href="/">
           <a className="w-10 h-10">
